@@ -1,0 +1,951 @@
+openapi: 3.1.0
+info:
+  contact:
+    name: doslano
+    url: https://doslano.ru
+  description: |
+    Публичный REST API doslano: отправка заказных писем одним запросом, проверка
+    статуса и трек-номеров (наш РПО + Почты России), баланс, колбеки на финальный
+    статус письма.
+
+    **Авторизация** — API-ключ в заголовке `Authorization: Bearer dl_live_…`.
+    Ключи и журнал активности — в ЛК, раздел «API». Ключ имеет набор прав (scopes)
+    и (опционально) IP-allowlist.
+
+    **Оплата** — только с баланса аккаунта (предоплата). Пополнение — в ЛК.
+
+    **Колбеки** — необязательный `callback_url` указывается при отправке каждого
+    письма; иначе используйте поллинг `GET /v1/letters/{id}`. Тело колбека
+    подписывается HMAC-SHA256 секретом аккаунта (заголовок `X-Doslano-Signature`).
+
+    Это дополнительный интерфейс доступа к тем же услугам; использование
+    регулируется действующей офертой личного кабинета doslano.
+  license:
+    name: Proprietary — doslano
+    url: https://doslano.ru/terms-of-use
+  termsOfService: https://doslano.ru/terms-of-use
+  title: Doslano Integration API
+  version: 1.0.0
+servers:
+- description: Production
+  url: https://integration.doslano.ru
+security:
+- apiKey: []
+tags:
+- description: "Отправка писем, статусы, трек-номера."
+  name: Letters
+- description: Баланс аккаунта.
+  name: Balance
+paths:
+  /v1/letters:
+    get:
+      description: "Письма аккаунта (все каналы — и API, и личный кабинет; канал у\
+        казан в поле `channel`). Требуется scope `letters:read`."
+      operationId: listLetters
+      parameters:
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          $ref: '#/components/schemas/LetterStatus'
+        style: form
+      - explode: true
+        in: query
+        name: created_from
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: created_to
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listLetters_200_response'
+          description: Страница писем.
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+      summary: Список писем
+      tags:
+      - Letters
+      x-accepts:
+      - application/json
+      - application/problem+json
+    post:
+      description: |
+        Создаёт и (по умолчанию) сразу оплачивает с баланса одно заказное письмо
+        одним запросом. Опись формируется автоматически на нашей стороне.
+
+        Требуется scope `letters:write`.
+      operationId: createLetter
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLetterRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Letter'
+          description: Письмо принято. Тело — состояние письма (включая цену и результат
+            промокода).
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "402":
+          $ref: '#/components/responses/InsufficientFunds'
+        "422":
+          $ref: '#/components/responses/ValidationError'
+      summary: Отправить письмо
+      tags:
+      - Letters
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /v1/letters/{id}:
+    get:
+      description: Полное состояние письма с разбивкой по получателям и трек-номерами.
+        Требуется scope `letters:read`.
+      operationId: getLetter
+      parameters:
+      - $ref: '#/components/parameters/LetterId'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Letter'
+          description: Состояние письма.
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      summary: Статус письма
+      tags:
+      - Letters
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /v1/letters/{id}/recipients/{recipient_id}/tracking:
+    get:
+      description: События трекинга Почты России по конкретному получателю (если трек-номер
+        присвоен). Требуется scope `letters:read`.
+      operationId: getRecipientTracking
+      parameters:
+      - $ref: '#/components/parameters/LetterId'
+      - explode: false
+        in: path
+        name: recipient_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackingInfo'
+          description: События трекинга.
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      summary: Трек-события получателя
+      tags:
+      - Letters
+      x-accepts:
+      - application/json
+      - application/problem+json
+  /v1/balance:
+    get:
+      description: Текущий баланс в копейках. Требуется scope `balance:read`.
+      operationId: getBalance
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+          description: Баланс.
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+      summary: Баланс аккаунта
+      tags:
+      - Balance
+      x-accepts:
+      - application/json
+      - application/problem+json
+components:
+  parameters:
+    IdempotencyKey:
+      description: "Ключ идемпотентности. Повтор с тем же ключом в течение TTL вер\
+        нёт исходный результат, не создавая письмо повторно."
+      explode: false
+      in: header
+      name: Idempotency-Key
+      required: false
+      schema:
+        maxLength: 255
+        type: string
+      style: simple
+    LetterId:
+      description: Идентификатор письма.
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      style: simple
+  responses:
+    BadRequest:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Некорректный запрос.
+    Unauthorized:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: "Нет/неверный API-ключ, либо IP не в allowlist ключа."
+    Forbidden:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: У ключа нет нужного scope.
+    NotFound:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Ресурс не найден (или не принадлежит аккаунту).
+    InsufficientFunds:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Недостаточно средств на балансе (при `on_insufficient_funds=reject`).
+    ValidationError:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: "Ошибка валидации данных письма (адрес, файл, получатели и т.п\
+        .)."
+  schemas:
+    CreateLetterRequest:
+      additionalProperties: false
+      example:
+        callback_url: https://openapi-generator.tech
+        sender:
+          address: address
+          party_type: individual
+          name: name
+          inn: inn
+          email: email
+        recipients:
+        - address: address
+          party_type: null
+          name: name
+          inn: inn
+        - address: address
+          party_type: null
+          name: name
+          inn: inn
+        - address: address
+          party_type: null
+          name: name
+          inn: inn
+        - address: address
+          party_type: null
+          name: name
+          inn: inn
+        - address: address
+          party_type: null
+          name: name
+          inn: inn
+        promo_code: promo_code
+        on_promo_invalid: ignore
+        letter_class: registered
+        content:
+          main_file:
+            filename: filename
+            base64: base64
+            url: https://openapi-generator.tech
+          attachments:
+          - filename: filename
+            base64: base64
+            url: https://openapi-generator.tech
+          - filename: filename
+            base64: base64
+            url: https://openapi-generator.tech
+          - filename: filename
+            base64: base64
+            url: https://openapi-generator.tech
+          - filename: filename
+            base64: base64
+            url: https://openapi-generator.tech
+          - filename: filename
+            base64: base64
+            url: https://openapi-generator.tech
+        on_insufficient_funds: reject
+      properties:
+        sender:
+          $ref: '#/components/schemas/SenderInput'
+        recipients:
+          items:
+            $ref: '#/components/schemas/RecipientInput'
+          maxItems: 20
+          minItems: 1
+          type: array
+        content:
+          $ref: '#/components/schemas/LetterContent'
+        letter_class:
+          $ref: '#/components/schemas/LetterClass'
+        promo_code:
+          description: Промокод (опционально).
+          type: string
+        on_promo_invalid:
+          default: ignore
+          description: |
+            Что делать, если промокод не применился: `ignore` — отправить без
+            скидки и вернуть пометку в `pricing.promo`; `reject` — отклонить (422).
+          enum:
+          - ignore
+          - reject
+          type: string
+        on_insufficient_funds:
+          default: reject
+          description: |
+            Что делать при нехватке средств: `reject` — отклонить (402), письмо не
+            создаётся; `hold` — создать письмо в статусе `awaiting_payment`, оно
+            оплатится автоматически при пополнении баланса.
+          enum:
+          - reject
+          - hold
+          type: string
+        callback_url:
+          description: HTTPS-URL для колбеков по этому письму. Если не указан — используйте
+            поллинг.
+          format: uri
+          type: string
+      required:
+      - content
+      - recipients
+    LetterContent:
+      additionalProperties: false
+      description: Контент письма. Опись формируется автоматически.
+      example:
+        main_file:
+          filename: filename
+          base64: base64
+          url: https://openapi-generator.tech
+        attachments:
+        - filename: filename
+          base64: base64
+          url: https://openapi-generator.tech
+        - filename: filename
+          base64: base64
+          url: https://openapi-generator.tech
+        - filename: filename
+          base64: base64
+          url: https://openapi-generator.tech
+        - filename: filename
+          base64: base64
+          url: https://openapi-generator.tech
+        - filename: filename
+          base64: base64
+          url: https://openapi-generator.tech
+      properties:
+        main_file:
+          $ref: '#/components/schemas/FileSource'
+        attachments:
+          items:
+            $ref: '#/components/schemas/FileSource'
+          maxItems: 10
+          type: array
+      required:
+      - main_file
+    FileSource:
+      additionalProperties: false
+      description: |
+        Источник PDF-файла. Укажите **ровно один** способ:
+        - `base64` — содержимое файла в base64 (для небольших файлов);
+        - `url` — HTTPS-ссылка, файл скачивается потоково (для крупных файлов,
+          чтобы не передавать тело в base64).
+        Лимиты по размеру/страницам — см. документацию; тип файла — только PDF.
+      example:
+        filename: filename
+        base64: base64
+        url: https://openapi-generator.tech
+      properties:
+        base64:
+          description: PDF в base64.
+          type: string
+        url:
+          description: HTTPS-ссылка на PDF (скачиваем потоково).
+          format: uri
+          type: string
+        filename:
+          description: "Имя файла (опционально, для отображения)."
+          type: string
+    SenderInput:
+      additionalProperties: false
+      example:
+        address: address
+        party_type: individual
+        name: name
+        inn: inn
+        email: email
+      properties:
+        name:
+          description: ФИО или название отправителя.
+          type: string
+        address:
+          description: Адрес отправителя (строкой; нормализуется на нашей стороне).
+          type: string
+        email:
+          format: email
+          type: string
+        party_type:
+          $ref: '#/components/schemas/PartyType'
+        inn:
+          description: ИНН (для юр. лиц/ИП).
+          type: string
+      required:
+      - address
+      - name
+    RecipientInput:
+      additionalProperties: false
+      example:
+        address: address
+        party_type: null
+        name: name
+        inn: inn
+      properties:
+        name:
+          description: ФИО или название получателя.
+          type: string
+        address:
+          description: Адрес получателя (строкой; нормализуется на нашей стороне).
+          type: string
+        party_type:
+          $ref: '#/components/schemas/PartyType'
+        inn:
+          type: string
+      required:
+      - address
+      - name
+    PartyType:
+      description: Тип лица — физическое или юридическое.
+      enum:
+      - individual
+      - organization
+      type: string
+    LetterClass:
+      default: registered
+      description: Тип отправления. Пока поддерживается только заказное (`registered`).
+      enum:
+      - registered
+      type: string
+    Letter:
+      example:
+        callback_url: https://openapi-generator.tech
+        sender:
+          address: address
+          party_type: individual
+          name: name
+          inn: inn
+        recipients:
+        - address: address
+          price_minor: 0
+          name: name
+          tracking_number: tracking_number
+          id: id
+          error: error
+          shipment_number: shipment_number
+          status: pending
+        - address: address
+          price_minor: 0
+          name: name
+          tracking_number: tracking_number
+          id: id
+          error: error
+          shipment_number: shipment_number
+          status: pending
+        channel: web
+        created_at: 2000-01-23T04:56:07.000+00:00
+        payment:
+          charged: true
+          status: paid
+        id: id
+        pricing:
+          promo:
+            code: code
+            applied: true
+            discount_minor: 1
+            message: message
+          total_minor: 6
+          currency: RUB
+        status: forming
+      properties:
+        id:
+          type: string
+        channel:
+          description: Канал создания письма — `api` (этот API) или `web` (личный
+            кабинет).
+          enum:
+          - web
+          - api
+          type: string
+        status:
+          $ref: '#/components/schemas/LetterStatus'
+        created_at:
+          format: date-time
+          type: string
+        sender:
+          $ref: '#/components/schemas/Party'
+        recipients:
+          items:
+            $ref: '#/components/schemas/Recipient'
+          type: array
+        pricing:
+          $ref: '#/components/schemas/Pricing'
+        payment:
+          $ref: '#/components/schemas/PaymentResult'
+        callback_url:
+          format: uri
+          type: string
+      required:
+      - channel
+      - created_at
+      - id
+      - pricing
+      - recipients
+      - status
+    Recipient:
+      example:
+        address: address
+        price_minor: 0
+        name: name
+        tracking_number: tracking_number
+        id: id
+        error: error
+        shipment_number: shipment_number
+        status: pending
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        status:
+          $ref: '#/components/schemas/RecipientStatus'
+        shipment_number:
+          description: "Наш трек-номер (РПО), присваивается сразу при создании."
+          type: string
+        tracking_number:
+          description: Трек-номер Почты России (ШПИ). Появляется после регистрации
+            отправления.
+          type: string
+        price_minor:
+          description: "Стоимость отправления этому получателю, в копейках."
+          format: int64
+          type: integer
+        error:
+          description: Причина ошибки (для `failed`).
+          type: string
+      required:
+      - id
+      - name
+      - status
+    Party:
+      example:
+        address: address
+        party_type: individual
+        name: name
+        inn: inn
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        party_type:
+          $ref: '#/components/schemas/PartyType'
+        inn:
+          type: string
+    Pricing:
+      example:
+        promo:
+          code: code
+          applied: true
+          discount_minor: 1
+          message: message
+        total_minor: 6
+        currency: RUB
+      properties:
+        total_minor:
+          description: "Итоговая списанная сумма, в копейках."
+          format: int64
+          type: integer
+        currency:
+          enum:
+          - RUB
+          type: string
+        promo:
+          $ref: '#/components/schemas/PromoResult'
+      required:
+      - currency
+      - total_minor
+    PromoResult:
+      description: Результат применения промокода (если передан).
+      example:
+        code: code
+        applied: true
+        discount_minor: 1
+        message: message
+      properties:
+        code:
+          type: string
+        applied:
+          description: Применён ли промокод.
+          type: boolean
+        discount_minor:
+          description: Размер скидки в копейках (если применён).
+          format: int64
+          type: integer
+        message:
+          description: "Пояснение, если промокод не применён (письмо при этом отпр\
+            авлено)."
+          type: string
+      required:
+      - applied
+      - code
+    PaymentResult:
+      example:
+        charged: true
+        status: paid
+      properties:
+        charged:
+          description: Списаны ли средства с баланса.
+          type: boolean
+        status:
+          description: '`awaiting_payment` — при `on_insufficient_funds=hold` до пополнения.'
+          enum:
+          - paid
+          - awaiting_payment
+          type: string
+      required:
+      - charged
+    Balance:
+      example:
+        balance_minor: 0
+        currency: RUB
+      properties:
+        balance_minor:
+          description: Баланс в копейках.
+          format: int64
+          type: integer
+        currency:
+          enum:
+          - RUB
+          type: string
+      required:
+      - balance_minor
+      - currency
+    LetterStatus:
+      description: |
+        Жизненный цикл письма. Финальные: `sent`, `partial_failure`, `error`, `cancelled`.
+      enum:
+      - forming
+      - awaiting_payment
+      - paid
+      - sending
+      - sent
+      - partial_failure
+      - error
+      - cancelled
+      type: string
+    RecipientStatus:
+      description: |
+        Статус отправления получателю. `sent` — присвоен трек-номер Почты;
+        финальные: `delivered`, `failed`.
+      enum:
+      - pending
+      - queued
+      - sending
+      - sent
+      - delivered
+      - failed
+      type: string
+    TrackingInfo:
+      example:
+        tracking_number: tracking_number
+        shipment_number: shipment_number
+        events:
+        - occurred_at: 2000-01-23T04:56:07.000+00:00
+          code: code
+          name: name
+          location: location
+        - occurred_at: 2000-01-23T04:56:07.000+00:00
+          code: code
+          name: name
+          location: location
+        recipient_id: recipient_id
+      properties:
+        recipient_id:
+          type: string
+        shipment_number:
+          type: string
+        tracking_number:
+          type: string
+        events:
+          items:
+            $ref: '#/components/schemas/TrackingInfo_events_inner'
+          type: array
+      required:
+      - events
+      - recipient_id
+    WebhookEvent:
+      example:
+        data:
+          tracking_number: tracking_number
+          letter_id: letter_id
+          error: error
+          shipment_number: shipment_number
+          recipient_id: recipient_id
+          status: status
+        created_at: 2000-01-23T04:56:07.000+00:00
+        id: id
+        type: letter.sent
+      properties:
+        id:
+          description: Уникальный идентификатор события (для дедупа).
+          type: string
+        type:
+          enum:
+          - letter.sent
+          - letter.partial_failure
+          - letter.failed
+          - letter.cancelled
+          - recipient.sent
+          - recipient.failed
+          - recipient.delivered
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        data:
+          $ref: '#/components/schemas/WebhookEvent_data'
+      required:
+      - created_at
+      - data
+      - id
+      - type
+    Problem:
+      description: Ошибка в формате RFC 9457 (problem+json).
+      properties:
+        type:
+          format: uri
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        code:
+          description: "Машиночитаемый код ошибки (напр. `insufficient_funds`, `validation_failed`,\
+            \ `forbidden_scope`)."
+          type: string
+    listLetters_200_response:
+      example:
+        data:
+        - callback_url: https://openapi-generator.tech
+          sender:
+            address: address
+            party_type: individual
+            name: name
+            inn: inn
+          recipients:
+          - address: address
+            price_minor: 0
+            name: name
+            tracking_number: tracking_number
+            id: id
+            error: error
+            shipment_number: shipment_number
+            status: pending
+          - address: address
+            price_minor: 0
+            name: name
+            tracking_number: tracking_number
+            id: id
+            error: error
+            shipment_number: shipment_number
+            status: pending
+          channel: web
+          created_at: 2000-01-23T04:56:07.000+00:00
+          payment:
+            charged: true
+            status: paid
+          id: id
+          pricing:
+            promo:
+              code: code
+              applied: true
+              discount_minor: 1
+              message: message
+            total_minor: 6
+            currency: RUB
+          status: forming
+        - callback_url: https://openapi-generator.tech
+          sender:
+            address: address
+            party_type: individual
+            name: name
+            inn: inn
+          recipients:
+          - address: address
+            price_minor: 0
+            name: name
+            tracking_number: tracking_number
+            id: id
+            error: error
+            shipment_number: shipment_number
+            status: pending
+          - address: address
+            price_minor: 0
+            name: name
+            tracking_number: tracking_number
+            id: id
+            error: error
+            shipment_number: shipment_number
+            status: pending
+          channel: web
+          created_at: 2000-01-23T04:56:07.000+00:00
+          payment:
+            charged: true
+            status: paid
+          id: id
+          pricing:
+            promo:
+              code: code
+              applied: true
+              discount_minor: 1
+              message: message
+            total_minor: 6
+            currency: RUB
+          status: forming
+        has_more: true
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Letter'
+          type: array
+        has_more:
+          type: boolean
+      required:
+      - data
+      - has_more
+    TrackingInfo_events_inner:
+      example:
+        occurred_at: 2000-01-23T04:56:07.000+00:00
+        code: code
+        name: name
+        location: location
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        occurred_at:
+          format: date-time
+          type: string
+        location:
+          type: string
+    WebhookEvent_data:
+      example:
+        tracking_number: tracking_number
+        letter_id: letter_id
+        error: error
+        shipment_number: shipment_number
+        recipient_id: recipient_id
+        status: status
+      properties:
+        letter_id:
+          type: string
+        recipient_id:
+          type: string
+        status:
+          type: string
+        shipment_number:
+          type: string
+        tracking_number:
+          type: string
+        error:
+          type: string
+      required:
+      - letter_id
+      - status
+  securitySchemes:
+    apiKey:
+      bearerFormat: API key
+      description: |
+        API-ключ вида `dl_live_…` в заголовке `Authorization: Bearer …`.
+        Права (scopes): `letters:write`, `letters:read`, `balance:read`.
+        Ключ может быть ограничен IP-allowlist'ом (настраивается в ЛК).
+      scheme: bearer
+      type: http
+
