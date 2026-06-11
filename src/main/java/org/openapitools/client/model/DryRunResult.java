@@ -21,6 +21,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import org.openapitools.client.model.DryRunResultPricing;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,110 +47,106 @@ import java.util.Set;
 import ru.doslano.sdk.JSON;
 
 /**
- * PaymentResult
+ * Результат пробного прогона (&#x60;dry_run: true&#x60;): запрос полностью валиден. Письмо НЕ создано, средства НЕ списаны. 
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-11T11:05:00.528130304Z[Etc/UTC]", comments = "Generator version: 7.10.0")
-public class PaymentResult {
-  public static final String SERIALIZED_NAME_CHARGED = "charged";
-  @SerializedName(SERIALIZED_NAME_CHARGED)
+public class DryRunResult {
+  public static final String SERIALIZED_NAME_DRY_RUN = "dry_run";
+  @SerializedName(SERIALIZED_NAME_DRY_RUN)
   @javax.annotation.Nonnull
-  private Boolean charged;
+  private Boolean dryRun;
 
-  /**
-   * &#x60;awaiting_payment&#x60; — при &#x60;on_insufficient_funds&#x3D;hold&#x60; до пополнения.
-   */
-  @JsonAdapter(StatusEnum.Adapter.class)
-  public enum StatusEnum {
-    PAID("paid"),
-    
-    AWAITING_PAYMENT("awaiting_payment");
+  public static final String SERIALIZED_NAME_VALID = "valid";
+  @SerializedName(SERIALIZED_NAME_VALID)
+  @javax.annotation.Nonnull
+  private Boolean valid;
 
-    private String value;
+  public static final String SERIALIZED_NAME_RECIPIENTS_COUNT = "recipients_count";
+  @SerializedName(SERIALIZED_NAME_RECIPIENTS_COUNT)
+  @javax.annotation.Nonnull
+  private Integer recipientsCount;
 
-    StatusEnum(String value) {
-      this.value = value;
-    }
+  public static final String SERIALIZED_NAME_PRICING = "pricing";
+  @SerializedName(SERIALIZED_NAME_PRICING)
+  @javax.annotation.Nonnull
+  private DryRunResultPricing pricing;
 
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    public static StatusEnum fromValue(String value) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    public static class Adapter extends TypeAdapter<StatusEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final StatusEnum enumeration) throws IOException {
-        jsonWriter.value(enumeration.getValue());
-      }
-
-      @Override
-      public StatusEnum read(final JsonReader jsonReader) throws IOException {
-        String value =  jsonReader.nextString();
-        return StatusEnum.fromValue(value);
-      }
-    }
-
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      String value = jsonElement.getAsString();
-      StatusEnum.fromValue(value);
-    }
+  public DryRunResult() {
   }
 
-  public static final String SERIALIZED_NAME_STATUS = "status";
-  @SerializedName(SERIALIZED_NAME_STATUS)
-  @javax.annotation.Nullable
-  private StatusEnum status;
-
-  public PaymentResult() {
-  }
-
-  public PaymentResult charged(@javax.annotation.Nonnull Boolean charged) {
-    this.charged = charged;
+  public DryRunResult dryRun(@javax.annotation.Nonnull Boolean dryRun) {
+    this.dryRun = dryRun;
     return this;
   }
 
   /**
-   * Списаны ли средства с баланса.
-   * @return charged
+   * Всегда &#x60;true&#x60; (маркер ответа пробного прогона).
+   * @return dryRun
    */
   @javax.annotation.Nonnull
-  public Boolean getCharged() {
-    return charged;
+  public Boolean getDryRun() {
+    return dryRun;
   }
 
-  public void setCharged(@javax.annotation.Nonnull Boolean charged) {
-    this.charged = charged;
+  public void setDryRun(@javax.annotation.Nonnull Boolean dryRun) {
+    this.dryRun = dryRun;
   }
 
 
-  public PaymentResult status(@javax.annotation.Nullable StatusEnum status) {
-    this.status = status;
+  public DryRunResult valid(@javax.annotation.Nonnull Boolean valid) {
+    this.valid = valid;
     return this;
   }
 
   /**
-   * &#x60;awaiting_payment&#x60; — при &#x60;on_insufficient_funds&#x3D;hold&#x60; до пополнения.
-   * @return status
+   * Всегда &#x60;true&#x60; — невалидные запросы получают 400/422.
+   * @return valid
    */
-  @javax.annotation.Nullable
-  public StatusEnum getStatus() {
-    return status;
+  @javax.annotation.Nonnull
+  public Boolean getValid() {
+    return valid;
   }
 
-  public void setStatus(@javax.annotation.Nullable StatusEnum status) {
-    this.status = status;
+  public void setValid(@javax.annotation.Nonnull Boolean valid) {
+    this.valid = valid;
+  }
+
+
+  public DryRunResult recipientsCount(@javax.annotation.Nonnull Integer recipientsCount) {
+    this.recipientsCount = recipientsCount;
+    return this;
+  }
+
+  /**
+   * Количество получателей (&#x3D; отправлений) в запросе.
+   * @return recipientsCount
+   */
+  @javax.annotation.Nonnull
+  public Integer getRecipientsCount() {
+    return recipientsCount;
+  }
+
+  public void setRecipientsCount(@javax.annotation.Nonnull Integer recipientsCount) {
+    this.recipientsCount = recipientsCount;
+  }
+
+
+  public DryRunResult pricing(@javax.annotation.Nonnull DryRunResultPricing pricing) {
+    this.pricing = pricing;
+    return this;
+  }
+
+  /**
+   * Get pricing
+   * @return pricing
+   */
+  @javax.annotation.Nonnull
+  public DryRunResultPricing getPricing() {
+    return pricing;
+  }
+
+  public void setPricing(@javax.annotation.Nonnull DryRunResultPricing pricing) {
+    this.pricing = pricing;
   }
 
 
@@ -162,22 +159,26 @@ public class PaymentResult {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PaymentResult paymentResult = (PaymentResult) o;
-    return Objects.equals(this.charged, paymentResult.charged) &&
-        Objects.equals(this.status, paymentResult.status);
+    DryRunResult dryRunResult = (DryRunResult) o;
+    return Objects.equals(this.dryRun, dryRunResult.dryRun) &&
+        Objects.equals(this.valid, dryRunResult.valid) &&
+        Objects.equals(this.recipientsCount, dryRunResult.recipientsCount) &&
+        Objects.equals(this.pricing, dryRunResult.pricing);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(charged, status);
+    return Objects.hash(dryRun, valid, recipientsCount, pricing);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class PaymentResult {\n");
-    sb.append("    charged: ").append(toIndentedString(charged)).append("\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("class DryRunResult {\n");
+    sb.append("    dryRun: ").append(toIndentedString(dryRun)).append("\n");
+    sb.append("    valid: ").append(toIndentedString(valid)).append("\n");
+    sb.append("    recipientsCount: ").append(toIndentedString(recipientsCount)).append("\n");
+    sb.append("    pricing: ").append(toIndentedString(pricing)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -200,71 +201,71 @@ public class PaymentResult {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("charged");
-    openapiFields.add("status");
+    openapiFields.add("dry_run");
+    openapiFields.add("valid");
+    openapiFields.add("recipients_count");
+    openapiFields.add("pricing");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("charged");
+    openapiRequiredFields.add("dry_run");
+    openapiRequiredFields.add("valid");
+    openapiRequiredFields.add("recipients_count");
+    openapiRequiredFields.add("pricing");
   }
 
   /**
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to PaymentResult
+   * @throws IOException if the JSON Element is invalid with respect to DryRunResult
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!PaymentResult.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in PaymentResult is not found in the empty JSON string", PaymentResult.openapiRequiredFields.toString()));
+        if (!DryRunResult.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in DryRunResult is not found in the empty JSON string", DryRunResult.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!PaymentResult.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `PaymentResult` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!DryRunResult.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `DryRunResult` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : PaymentResult.openapiRequiredFields) {
+      for (String requiredField : DryRunResult.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) && !jsonObj.get("status").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
-      }
-      // validate the optional field `status`
-      if (jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) {
-        StatusEnum.validateJsonElement(jsonObj.get("status"));
-      }
+      // validate the required field `pricing`
+      DryRunResultPricing.validateJsonElement(jsonObj.get("pricing"));
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!PaymentResult.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'PaymentResult' and its subtypes
+       if (!DryRunResult.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'DryRunResult' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<PaymentResult> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(PaymentResult.class));
+       final TypeAdapter<DryRunResult> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(DryRunResult.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<PaymentResult>() {
+       return (TypeAdapter<T>) new TypeAdapter<DryRunResult>() {
            @Override
-           public void write(JsonWriter out, PaymentResult value) throws IOException {
+           public void write(JsonWriter out, DryRunResult value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public PaymentResult read(JsonReader in) throws IOException {
+           public DryRunResult read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -275,18 +276,18 @@ public class PaymentResult {
   }
 
   /**
-   * Create an instance of PaymentResult given an JSON string
+   * Create an instance of DryRunResult given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of PaymentResult
-   * @throws IOException if the JSON string is invalid with respect to PaymentResult
+   * @return An instance of DryRunResult
+   * @throws IOException if the JSON string is invalid with respect to DryRunResult
    */
-  public static PaymentResult fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, PaymentResult.class);
+  public static DryRunResult fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, DryRunResult.class);
   }
 
   /**
-   * Convert an instance of PaymentResult to an JSON string
+   * Convert an instance of DryRunResult to an JSON string
    *
    * @return JSON string
    */

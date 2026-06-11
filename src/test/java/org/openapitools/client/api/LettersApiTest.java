@@ -15,6 +15,7 @@ package org.openapitools.client.api;
 
 import ru.doslano.sdk.ApiException;
 import org.openapitools.client.model.CreateLetterRequest;
+import org.openapitools.client.model.DryRunResult;
 import org.openapitools.client.model.Letter;
 import org.openapitools.client.model.LetterStatus;
 import org.openapitools.client.model.ListLetters200Response;
@@ -48,7 +49,7 @@ public class LettersApiTest {
     public void createLetterTest() throws ApiException {
         CreateLetterRequest createLetterRequest = null;
         String idempotencyKey = null;
-        Letter response = api.createLetter(createLetterRequest, idempotencyKey);
+        DryRunResult response = api.createLetter(createLetterRequest, idempotencyKey);
         // TODO: test validations
     }
 

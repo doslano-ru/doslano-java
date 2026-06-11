@@ -12,7 +12,7 @@ All URIs are relative to *https://integration.doslano.ru*
 
 <a id="createLetter"></a>
 # **createLetter**
-> Letter createLetter(createLetterRequest, idempotencyKey)
+> DryRunResult createLetter(createLetterRequest, idempotencyKey)
 
 Отправить письмо
 
@@ -41,7 +41,7 @@ public class Example {
     CreateLetterRequest createLetterRequest = new CreateLetterRequest(); // CreateLetterRequest | 
     String idempotencyKey = "idempotencyKey_example"; // String | Ключ идемпотентности. Повтор с тем же ключом в течение TTL вернёт исходный результат, не создавая письмо повторно.
     try {
-      Letter result = apiInstance.createLetter(createLetterRequest, idempotencyKey);
+      DryRunResult result = apiInstance.createLetter(createLetterRequest, idempotencyKey);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling LettersApi#createLetter");
@@ -63,7 +63,7 @@ public class Example {
 
 ### Return type
 
-[**Letter**](Letter.md)
+[**DryRunResult**](DryRunResult.md)
 
 ### Authorization
 
@@ -78,6 +78,7 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Письмо принято. Тело — состояние письма (включая цену и результат промокода). |  -  |
+| **200** | Пробный прогон (&#x60;dry_run: true&#x60;) успешен: запрос валиден, показан расчёт. Письмо не создано, средства не списаны. |  -  |
 | **400** | Некорректный запрос. |  -  |
 | **401** | Нет/неверный API-ключ, либо IP не в allowlist ключа. |  -  |
 | **403** | У ключа нет нужного scope. |  -  |

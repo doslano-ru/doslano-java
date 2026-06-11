@@ -28,6 +28,7 @@ import java.io.IOException;
 
 
 import org.openapitools.client.model.CreateLetterRequest;
+import org.openapitools.client.model.DryRunResult;
 import org.openapitools.client.model.Letter;
 import org.openapitools.client.model.LetterStatus;
 import org.openapitools.client.model.ListLetters200Response;
@@ -90,6 +91,7 @@ public class LettersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Письмо принято. Тело — состояние письма (включая цену и результат промокода). </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Пробный прогон (&#x60;dry_run: true&#x60;) успешен: запрос валиден, показан расчёт. Письмо не создано, средства не списаны. </td><td>  -  </td></tr>
         <tr><td> 400 </td><td> Некорректный запрос. </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
@@ -164,13 +166,14 @@ public class LettersApi {
      * Создаёт и (по умолчанию) сразу оплачивает с баланса одно заказное письмо одним запросом. Опись формируется автоматически на нашей стороне.  Требуется scope &#x60;letters:write&#x60;. 
      * @param createLetterRequest  (required)
      * @param idempotencyKey Ключ идемпотентности. Повтор с тем же ключом в течение TTL вернёт исходный результат, не создавая письмо повторно. (optional)
-     * @return Letter
+     * @return DryRunResult
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Письмо принято. Тело — состояние письма (включая цену и результат промокода). </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Пробный прогон (&#x60;dry_run: true&#x60;) успешен: запрос валиден, показан расчёт. Письмо не создано, средства не списаны. </td><td>  -  </td></tr>
         <tr><td> 400 </td><td> Некорректный запрос. </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
@@ -178,8 +181,8 @@ public class LettersApi {
         <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). </td><td>  -  </td></tr>
      </table>
      */
-    public Letter createLetter(CreateLetterRequest createLetterRequest, String idempotencyKey) throws ApiException {
-        ApiResponse<Letter> localVarResp = createLetterWithHttpInfo(createLetterRequest, idempotencyKey);
+    public DryRunResult createLetter(CreateLetterRequest createLetterRequest, String idempotencyKey) throws ApiException {
+        ApiResponse<DryRunResult> localVarResp = createLetterWithHttpInfo(createLetterRequest, idempotencyKey);
         return localVarResp.getData();
     }
 
@@ -188,13 +191,14 @@ public class LettersApi {
      * Создаёт и (по умолчанию) сразу оплачивает с баланса одно заказное письмо одним запросом. Опись формируется автоматически на нашей стороне.  Требуется scope &#x60;letters:write&#x60;. 
      * @param createLetterRequest  (required)
      * @param idempotencyKey Ключ идемпотентности. Повтор с тем же ключом в течение TTL вернёт исходный результат, не создавая письмо повторно. (optional)
-     * @return ApiResponse&lt;Letter&gt;
+     * @return ApiResponse&lt;DryRunResult&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Письмо принято. Тело — состояние письма (включая цену и результат промокода). </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Пробный прогон (&#x60;dry_run: true&#x60;) успешен: запрос валиден, показан расчёт. Письмо не создано, средства не списаны. </td><td>  -  </td></tr>
         <tr><td> 400 </td><td> Некорректный запрос. </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
@@ -202,9 +206,9 @@ public class LettersApi {
         <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Letter> createLetterWithHttpInfo(CreateLetterRequest createLetterRequest, String idempotencyKey) throws ApiException {
+    public ApiResponse<DryRunResult> createLetterWithHttpInfo(CreateLetterRequest createLetterRequest, String idempotencyKey) throws ApiException {
         okhttp3.Call localVarCall = createLetterValidateBeforeCall(createLetterRequest, idempotencyKey, null);
-        Type localVarReturnType = new TypeToken<Letter>(){}.getType();
+        Type localVarReturnType = new TypeToken<DryRunResult>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
@@ -221,6 +225,7 @@ public class LettersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Письмо принято. Тело — состояние письма (включая цену и результат промокода). </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Пробный прогон (&#x60;dry_run: true&#x60;) успешен: запрос валиден, показан расчёт. Письмо не создано, средства не списаны. </td><td>  -  </td></tr>
         <tr><td> 400 </td><td> Некорректный запрос. </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
@@ -228,10 +233,10 @@ public class LettersApi {
         <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call createLetterAsync(CreateLetterRequest createLetterRequest, String idempotencyKey, final ApiCallback<Letter> _callback) throws ApiException {
+    public okhttp3.Call createLetterAsync(CreateLetterRequest createLetterRequest, String idempotencyKey, final ApiCallback<DryRunResult> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = createLetterValidateBeforeCall(createLetterRequest, idempotencyKey, _callback);
-        Type localVarReturnType = new TypeToken<Letter>(){}.getType();
+        Type localVarReturnType = new TypeToken<DryRunResult>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

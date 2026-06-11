@@ -125,6 +125,13 @@ paths:
                 $ref: '#/components/schemas/Letter'
           description: Письмо принято. Тело — состояние письма (включая цену и результат
             промокода).
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DryRunResult'
+          description: "Пробный прогон (`dry_run: true`) успешен: запрос валиден,\
+            \ показан расчёт. Письмо не создано, средства не списаны."
         "400":
           $ref: '#/components/responses/BadRequest'
         "401":
@@ -316,6 +323,7 @@ components:
           inn: inn
         promo_code: promo_code
         on_promo_invalid: ignore
+        dry_run: false
         letter_class: registered
         content:
           main_file:
@@ -374,6 +382,20 @@ components:
           - reject
           - hold
           type: string
+        dry_run:
+          default: false
+          description: |
+            Пробный прогон: запрос проходит ПОЛНУЮ реальную валидацию (ключ,
+            scope, IP, файлы, адреса получателей, промокод) и возвращает
+            расчёт цены — но письмо в итоге не создаётся и средства не
+            списываются. Ответ — `200` со схемой `DryRunResult` (вместо
+            `201`/`Letter`). Ошибки валидации возвращаются теми же кодами,
+            что и при реальной отправке (400/422) — это честный тест
+            интеграции. `Idempotency-Key` при `dry_run` игнорируется;
+            `callback_url` не регистрируется; баланс НЕ проверяется
+            (тестируйте хоть с нулевым балансом — сумма к списанию будет
+            в `pricing.total_minor`).
+          type: boolean
         callback_url:
           description: HTTPS-URL для колбеков по этому письму. Если не указан — используйте
             поллинг.
@@ -382,6 +404,40 @@ components:
       required:
       - content
       - recipients
+    DryRunResult:
+      description: |
+        Результат пробного прогона (`dry_run: true`): запрос полностью
+        валиден. Письмо НЕ создано, средства НЕ списаны.
+      example:
+        valid: true
+        recipients_count: 0
+        dry_run: true
+        pricing:
+          promo:
+            code: code
+            applied: true
+            discount_minor: 1
+            message: message
+          total_minor: 1
+          subtotal_minor: 6
+          currency: RUB
+      properties:
+        dry_run:
+          description: Всегда `true` (маркер ответа пробного прогона).
+          type: boolean
+        valid:
+          description: Всегда `true` — невалидные запросы получают 400/422.
+          type: boolean
+        recipients_count:
+          description: Количество получателей (= отправлений) в запросе.
+          type: integer
+        pricing:
+          $ref: '#/components/schemas/DryRunResult_pricing'
+      required:
+      - dry_run
+      - pricing
+      - recipients_count
+      - valid
     LetterContent:
       additionalProperties: false
       description: Контент письма. Опись формируется автоматически.
@@ -899,6 +955,37 @@ components:
       required:
       - data
       - has_more
+    DryRunResult_pricing:
+      description: Расчёт к списанию при реальной отправке этого запроса.
+      example:
+        promo:
+          code: code
+          applied: true
+          discount_minor: 1
+          message: message
+        total_minor: 1
+        subtotal_minor: 6
+        currency: RUB
+      properties:
+        subtotal_minor:
+          description: "Цена без скидки, в копейках."
+          format: int64
+          type: integer
+        total_minor:
+          description: "Итог к списанию (после промокода), в копейках. Non-binding\
+            \ — фиксируется при реальной оплате."
+          format: int64
+          type: integer
+        currency:
+          enum:
+          - RUB
+          type: string
+        promo:
+          $ref: '#/components/schemas/PromoResult'
+      required:
+      - currency
+      - subtotal_minor
+      - total_minor
     TrackingInfo_events_inner:
       example:
         occurred_at: 2000-01-23T04:56:07.000+00:00

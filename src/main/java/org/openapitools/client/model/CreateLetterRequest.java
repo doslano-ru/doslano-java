@@ -55,7 +55,7 @@ import ru.doslano.sdk.JSON;
 /**
  * CreateLetterRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-10T01:37:45.707279282Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-11T11:05:00.528130304Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class CreateLetterRequest {
   public static final String SERIALIZED_NAME_SENDER = "sender";
   @SerializedName(SERIALIZED_NAME_SENDER)
@@ -195,6 +195,11 @@ public class CreateLetterRequest {
   @SerializedName(SERIALIZED_NAME_ON_INSUFFICIENT_FUNDS)
   @javax.annotation.Nullable
   private OnInsufficientFundsEnum onInsufficientFunds = OnInsufficientFundsEnum.REJECT;
+
+  public static final String SERIALIZED_NAME_DRY_RUN = "dry_run";
+  @SerializedName(SERIALIZED_NAME_DRY_RUN)
+  @javax.annotation.Nullable
+  private Boolean dryRun = false;
 
   public static final String SERIALIZED_NAME_CALLBACK_URL = "callback_url";
   @SerializedName(SERIALIZED_NAME_CALLBACK_URL)
@@ -345,6 +350,25 @@ public class CreateLetterRequest {
   }
 
 
+  public CreateLetterRequest dryRun(@javax.annotation.Nullable Boolean dryRun) {
+    this.dryRun = dryRun;
+    return this;
+  }
+
+  /**
+   * Пробный прогон: запрос проходит ПОЛНУЮ реальную валидацию (ключ, scope, IP, файлы, адреса получателей, промокод) и возвращает расчёт цены — но письмо в итоге не создаётся и средства не списываются. Ответ — &#x60;200&#x60; со схемой &#x60;DryRunResult&#x60; (вместо &#x60;201&#x60;/&#x60;Letter&#x60;). Ошибки валидации возвращаются теми же кодами, что и при реальной отправке (400/422) — это честный тест интеграции. &#x60;Idempotency-Key&#x60; при &#x60;dry_run&#x60; игнорируется; &#x60;callback_url&#x60; не регистрируется; баланс НЕ проверяется (тестируйте хоть с нулевым балансом — сумма к списанию будет в &#x60;pricing.total_minor&#x60;). 
+   * @return dryRun
+   */
+  @javax.annotation.Nullable
+  public Boolean getDryRun() {
+    return dryRun;
+  }
+
+  public void setDryRun(@javax.annotation.Nullable Boolean dryRun) {
+    this.dryRun = dryRun;
+  }
+
+
   public CreateLetterRequest callbackUrl(@javax.annotation.Nullable URI callbackUrl) {
     this.callbackUrl = callbackUrl;
     return this;
@@ -381,12 +405,13 @@ public class CreateLetterRequest {
         Objects.equals(this.promoCode, createLetterRequest.promoCode) &&
         Objects.equals(this.onPromoInvalid, createLetterRequest.onPromoInvalid) &&
         Objects.equals(this.onInsufficientFunds, createLetterRequest.onInsufficientFunds) &&
+        Objects.equals(this.dryRun, createLetterRequest.dryRun) &&
         Objects.equals(this.callbackUrl, createLetterRequest.callbackUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(sender, recipients, content, letterClass, promoCode, onPromoInvalid, onInsufficientFunds, callbackUrl);
+    return Objects.hash(sender, recipients, content, letterClass, promoCode, onPromoInvalid, onInsufficientFunds, dryRun, callbackUrl);
   }
 
   @Override
@@ -400,6 +425,7 @@ public class CreateLetterRequest {
     sb.append("    promoCode: ").append(toIndentedString(promoCode)).append("\n");
     sb.append("    onPromoInvalid: ").append(toIndentedString(onPromoInvalid)).append("\n");
     sb.append("    onInsufficientFunds: ").append(toIndentedString(onInsufficientFunds)).append("\n");
+    sb.append("    dryRun: ").append(toIndentedString(dryRun)).append("\n");
     sb.append("    callbackUrl: ").append(toIndentedString(callbackUrl)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -430,6 +456,7 @@ public class CreateLetterRequest {
     openapiFields.add("promo_code");
     openapiFields.add("on_promo_invalid");
     openapiFields.add("on_insufficient_funds");
+    openapiFields.add("dry_run");
     openapiFields.add("callback_url");
 
     // a set of required properties/fields (JSON key names)

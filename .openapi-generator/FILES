@@ -10,6 +10,8 @@ docs/Balance.md
 docs/BalanceApi.md
 docs/CreateLetterRequest.md
 docs/DefaultApi.md
+docs/DryRunResult.md
+docs/DryRunResultPricing.md
 docs/FileSource.md
 docs/Letter.md
 docs/LetterClass.md
@@ -46,6 +48,8 @@ src/main/java/org/openapitools/client/api/LettersApi.java
 src/main/java/org/openapitools/client/model/AbstractOpenApiSchema.java
 src/main/java/org/openapitools/client/model/Balance.java
 src/main/java/org/openapitools/client/model/CreateLetterRequest.java
+src/main/java/org/openapitools/client/model/DryRunResult.java
+src/main/java/org/openapitools/client/model/DryRunResultPricing.java
 src/main/java/org/openapitools/client/model/FileSource.java
 src/main/java/org/openapitools/client/model/Letter.java
 src/main/java/org/openapitools/client/model/LetterClass.java
@@ -88,6 +92,8 @@ src/test/java/org/openapitools/client/api/DefaultApiTest.java
 src/test/java/org/openapitools/client/api/LettersApiTest.java
 src/test/java/org/openapitools/client/model/BalanceTest.java
 src/test/java/org/openapitools/client/model/CreateLetterRequestTest.java
+src/test/java/org/openapitools/client/model/DryRunResultPricingTest.java
+src/test/java/org/openapitools/client/model/DryRunResultTest.java
 src/test/java/org/openapitools/client/model/FileSourceTest.java
 src/test/java/org/openapitools/client/model/LetterClassTest.java
 src/test/java/org/openapitools/client/model/LetterContentTest.java

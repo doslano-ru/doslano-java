@@ -11,47 +11,63 @@
  */
 
 
-package ru.doslano.sdk;
+package org.openapitools.client.model;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-11T11:05:00.528130304Z[Etc/UTC]", comments = "Generator version: 7.10.0")
-public class Pair {
-    private String name = "";
-    private String value = "";
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import org.openapitools.client.model.DryRunResultPricing;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-    public Pair (String name, String value) {
-        setName(name);
-        setValue(value);
+/**
+ * Model tests for DryRunResult
+ */
+public class DryRunResultTest {
+    private final DryRunResult model = new DryRunResult();
+
+    /**
+     * Model tests for DryRunResult
+     */
+    @Test
+    public void testDryRunResult() {
+        // TODO: test DryRunResult
     }
 
-    private void setName(String name) {
-        if (!isValidString(name)) {
-            return;
-        }
-
-        this.name = name;
+    /**
+     * Test the property 'dryRun'
+     */
+    @Test
+    public void dryRunTest() {
+        // TODO: test dryRun
     }
 
-    private void setValue(String value) {
-        if (!isValidString(value)) {
-            return;
-        }
-
-        this.value = value;
+    /**
+     * Test the property 'valid'
+     */
+    @Test
+    public void validTest() {
+        // TODO: test valid
     }
 
-    public String getName() {
-        return this.name;
+    /**
+     * Test the property 'recipientsCount'
+     */
+    @Test
+    public void recipientsCountTest() {
+        // TODO: test recipientsCount
     }
 
-    public String getValue() {
-        return this.value;
+    /**
+     * Test the property 'pricing'
+     */
+    @Test
+    public void pricingTest() {
+        // TODO: test pricing
     }
 
-    private boolean isValidString(String arg) {
-        if (arg == null) {
-            return false;
-        }
-
-        return true;
-    }
 }

@@ -101,6 +101,14 @@ public class CreateLetterRequestTest {
     }
 
     /**
+     * Test the property 'dryRun'
+     */
+    @Test
+    public void dryRunTest() {
+        // TODO: test dryRun
+    }
+
+    /**
      * Test the property 'callbackUrl'
      */
     @Test

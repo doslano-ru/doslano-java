@@ -21,6 +21,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import org.openapitools.client.model.PromoResult;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,14 +47,19 @@ import java.util.Set;
 import ru.doslano.sdk.JSON;
 
 /**
- * Balance
+ * Расчёт к списанию при реальной отправке этого запроса.
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-11T11:05:00.528130304Z[Etc/UTC]", comments = "Generator version: 7.10.0")
-public class Balance {
-  public static final String SERIALIZED_NAME_BALANCE_MINOR = "balance_minor";
-  @SerializedName(SERIALIZED_NAME_BALANCE_MINOR)
+public class DryRunResultPricing {
+  public static final String SERIALIZED_NAME_SUBTOTAL_MINOR = "subtotal_minor";
+  @SerializedName(SERIALIZED_NAME_SUBTOTAL_MINOR)
   @javax.annotation.Nonnull
-  private Long balanceMinor;
+  private Long subtotalMinor;
+
+  public static final String SERIALIZED_NAME_TOTAL_MINOR = "total_minor";
+  @SerializedName(SERIALIZED_NAME_TOTAL_MINOR)
+  @javax.annotation.Nonnull
+  private Long totalMinor;
 
   /**
    * Gets or Sets currency
@@ -110,29 +116,53 @@ public class Balance {
   @javax.annotation.Nonnull
   private CurrencyEnum currency;
 
-  public Balance() {
+  public static final String SERIALIZED_NAME_PROMO = "promo";
+  @SerializedName(SERIALIZED_NAME_PROMO)
+  @javax.annotation.Nullable
+  private PromoResult promo;
+
+  public DryRunResultPricing() {
   }
 
-  public Balance balanceMinor(@javax.annotation.Nonnull Long balanceMinor) {
-    this.balanceMinor = balanceMinor;
+  public DryRunResultPricing subtotalMinor(@javax.annotation.Nonnull Long subtotalMinor) {
+    this.subtotalMinor = subtotalMinor;
     return this;
   }
 
   /**
-   * Баланс в копейках.
-   * @return balanceMinor
+   * Цена без скидки, в копейках.
+   * @return subtotalMinor
    */
   @javax.annotation.Nonnull
-  public Long getBalanceMinor() {
-    return balanceMinor;
+  public Long getSubtotalMinor() {
+    return subtotalMinor;
   }
 
-  public void setBalanceMinor(@javax.annotation.Nonnull Long balanceMinor) {
-    this.balanceMinor = balanceMinor;
+  public void setSubtotalMinor(@javax.annotation.Nonnull Long subtotalMinor) {
+    this.subtotalMinor = subtotalMinor;
   }
 
 
-  public Balance currency(@javax.annotation.Nonnull CurrencyEnum currency) {
+  public DryRunResultPricing totalMinor(@javax.annotation.Nonnull Long totalMinor) {
+    this.totalMinor = totalMinor;
+    return this;
+  }
+
+  /**
+   * Итог к списанию (после промокода), в копейках. Non-binding — фиксируется при реальной оплате.
+   * @return totalMinor
+   */
+  @javax.annotation.Nonnull
+  public Long getTotalMinor() {
+    return totalMinor;
+  }
+
+  public void setTotalMinor(@javax.annotation.Nonnull Long totalMinor) {
+    this.totalMinor = totalMinor;
+  }
+
+
+  public DryRunResultPricing currency(@javax.annotation.Nonnull CurrencyEnum currency) {
     this.currency = currency;
     return this;
   }
@@ -151,6 +181,25 @@ public class Balance {
   }
 
 
+  public DryRunResultPricing promo(@javax.annotation.Nullable PromoResult promo) {
+    this.promo = promo;
+    return this;
+  }
+
+  /**
+   * Get promo
+   * @return promo
+   */
+  @javax.annotation.Nullable
+  public PromoResult getPromo() {
+    return promo;
+  }
+
+  public void setPromo(@javax.annotation.Nullable PromoResult promo) {
+    this.promo = promo;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -160,22 +209,26 @@ public class Balance {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Balance balance = (Balance) o;
-    return Objects.equals(this.balanceMinor, balance.balanceMinor) &&
-        Objects.equals(this.currency, balance.currency);
+    DryRunResultPricing dryRunResultPricing = (DryRunResultPricing) o;
+    return Objects.equals(this.subtotalMinor, dryRunResultPricing.subtotalMinor) &&
+        Objects.equals(this.totalMinor, dryRunResultPricing.totalMinor) &&
+        Objects.equals(this.currency, dryRunResultPricing.currency) &&
+        Objects.equals(this.promo, dryRunResultPricing.promo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(balanceMinor, currency);
+    return Objects.hash(subtotalMinor, totalMinor, currency, promo);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Balance {\n");
-    sb.append("    balanceMinor: ").append(toIndentedString(balanceMinor)).append("\n");
+    sb.append("class DryRunResultPricing {\n");
+    sb.append("    subtotalMinor: ").append(toIndentedString(subtotalMinor)).append("\n");
+    sb.append("    totalMinor: ").append(toIndentedString(totalMinor)).append("\n");
     sb.append("    currency: ").append(toIndentedString(currency)).append("\n");
+    sb.append("    promo: ").append(toIndentedString(promo)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -198,12 +251,15 @@ public class Balance {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("balance_minor");
+    openapiFields.add("subtotal_minor");
+    openapiFields.add("total_minor");
     openapiFields.add("currency");
+    openapiFields.add("promo");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("balance_minor");
+    openapiRequiredFields.add("subtotal_minor");
+    openapiRequiredFields.add("total_minor");
     openapiRequiredFields.add("currency");
   }
 
@@ -211,25 +267,25 @@ public class Balance {
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to Balance
+   * @throws IOException if the JSON Element is invalid with respect to DryRunResultPricing
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!Balance.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in Balance is not found in the empty JSON string", Balance.openapiRequiredFields.toString()));
+        if (!DryRunResultPricing.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in DryRunResultPricing is not found in the empty JSON string", DryRunResultPricing.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!Balance.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `Balance` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!DryRunResultPricing.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `DryRunResultPricing` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : Balance.openapiRequiredFields) {
+      for (String requiredField : DryRunResultPricing.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
@@ -240,28 +296,32 @@ public class Balance {
       }
       // validate the required field `currency`
       CurrencyEnum.validateJsonElement(jsonObj.get("currency"));
+      // validate the optional field `promo`
+      if (jsonObj.get("promo") != null && !jsonObj.get("promo").isJsonNull()) {
+        PromoResult.validateJsonElement(jsonObj.get("promo"));
+      }
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!Balance.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'Balance' and its subtypes
+       if (!DryRunResultPricing.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'DryRunResultPricing' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<Balance> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(Balance.class));
+       final TypeAdapter<DryRunResultPricing> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(DryRunResultPricing.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<Balance>() {
+       return (TypeAdapter<T>) new TypeAdapter<DryRunResultPricing>() {
            @Override
-           public void write(JsonWriter out, Balance value) throws IOException {
+           public void write(JsonWriter out, DryRunResultPricing value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public Balance read(JsonReader in) throws IOException {
+           public DryRunResultPricing read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -272,18 +332,18 @@ public class Balance {
   }
 
   /**
-   * Create an instance of Balance given an JSON string
+   * Create an instance of DryRunResultPricing given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of Balance
-   * @throws IOException if the JSON string is invalid with respect to Balance
+   * @return An instance of DryRunResultPricing
+   * @throws IOException if the JSON string is invalid with respect to DryRunResultPricing
    */
-  public static Balance fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, Balance.class);
+  public static DryRunResultPricing fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, DryRunResultPricing.class);
   }
 
   /**
-   * Convert an instance of Balance to an JSON string
+   * Convert an instance of DryRunResultPricing to an JSON string
    *
    * @return JSON string
    */
