@@ -85,4 +85,12 @@ public class WebhookEventDataTest {
         // TODO: test error
     }
 
+    /**
+     * Test the property 'amountMinor'
+     */
+    @Test
+    public void amountMinorTest() {
+        // TODO: test amountMinor
+    }
+
 }

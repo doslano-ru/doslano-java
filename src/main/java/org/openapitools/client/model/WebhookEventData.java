@@ -48,7 +48,7 @@ import ru.doslano.sdk.JSON;
 /**
  * WebhookEventData
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-11T11:05:00.528130304Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-19T16:13:19.102645023Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class WebhookEventData {
   public static final String SERIALIZED_NAME_LETTER_ID = "letter_id";
   @SerializedName(SERIALIZED_NAME_LETTER_ID)
@@ -79,6 +79,11 @@ public class WebhookEventData {
   @SerializedName(SERIALIZED_NAME_ERROR)
   @javax.annotation.Nullable
   private String error;
+
+  public static final String SERIALIZED_NAME_AMOUNT_MINOR = "amount_minor";
+  @SerializedName(SERIALIZED_NAME_AMOUNT_MINOR)
+  @javax.annotation.Nullable
+  private Integer amountMinor;
 
   public WebhookEventData() {
   }
@@ -197,6 +202,25 @@ public class WebhookEventData {
   }
 
 
+  public WebhookEventData amountMinor(@javax.annotation.Nullable Integer amountMinor) {
+    this.amountMinor = amountMinor;
+    return this;
+  }
+
+  /**
+   * Фактически списанная стоимость отправления ЭТОМУ получателю, в копейках (доля дисконтированного тотала письма с учётом промокода). Присутствует только в &#x60;recipient.sent&#x60; — отправление реально ушло и оплачено. В &#x60;recipient.failed&#x60; отсутствует: при провале сумма возвращается на баланс.
+   * @return amountMinor
+   */
+  @javax.annotation.Nullable
+  public Integer getAmountMinor() {
+    return amountMinor;
+  }
+
+  public void setAmountMinor(@javax.annotation.Nullable Integer amountMinor) {
+    this.amountMinor = amountMinor;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -212,12 +236,13 @@ public class WebhookEventData {
         Objects.equals(this.status, webhookEventData.status) &&
         Objects.equals(this.shipmentNumber, webhookEventData.shipmentNumber) &&
         Objects.equals(this.trackingNumber, webhookEventData.trackingNumber) &&
-        Objects.equals(this.error, webhookEventData.error);
+        Objects.equals(this.error, webhookEventData.error) &&
+        Objects.equals(this.amountMinor, webhookEventData.amountMinor);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(letterId, recipientId, status, shipmentNumber, trackingNumber, error);
+    return Objects.hash(letterId, recipientId, status, shipmentNumber, trackingNumber, error, amountMinor);
   }
 
   @Override
@@ -230,6 +255,7 @@ public class WebhookEventData {
     sb.append("    shipmentNumber: ").append(toIndentedString(shipmentNumber)).append("\n");
     sb.append("    trackingNumber: ").append(toIndentedString(trackingNumber)).append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
+    sb.append("    amountMinor: ").append(toIndentedString(amountMinor)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -258,6 +284,7 @@ public class WebhookEventData {
     openapiFields.add("shipment_number");
     openapiFields.add("tracking_number");
     openapiFields.add("error");
+    openapiFields.add("amount_minor");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();

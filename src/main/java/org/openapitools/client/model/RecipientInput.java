@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * RecipientInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-11T11:05:00.528130304Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-19T16:13:19.102645023Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class RecipientInput {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)
@@ -58,7 +58,7 @@ public class RecipientInput {
 
   public static final String SERIALIZED_NAME_ADDRESS = "address";
   @SerializedName(SERIALIZED_NAME_ADDRESS)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String address;
 
   public static final String SERIALIZED_NAME_PARTY_TYPE = "party_type";
@@ -71,6 +71,11 @@ public class RecipientInput {
   @javax.annotation.Nullable
   private String inn;
 
+  public static final String SERIALIZED_NAME_RESOLVE_ADDRESS_BY_INN = "resolve_address_by_inn";
+  @SerializedName(SERIALIZED_NAME_RESOLVE_ADDRESS_BY_INN)
+  @javax.annotation.Nullable
+  private Boolean resolveAddressByInn = false;
+
   public RecipientInput() {
   }
 
@@ -80,7 +85,7 @@ public class RecipientInput {
   }
 
   /**
-   * ФИО или название получателя.
+   * ФИО или название получателя. При resolve_address_by_inn&#x3D;true ПЕРЕЗАПИСЫВАЕТСЯ наименованием из ЕГРЮЛ.
    * @return name
    */
   @javax.annotation.Nonnull
@@ -93,21 +98,21 @@ public class RecipientInput {
   }
 
 
-  public RecipientInput address(@javax.annotation.Nonnull String address) {
+  public RecipientInput address(@javax.annotation.Nullable String address) {
     this.address = address;
     return this;
   }
 
   /**
-   * Адрес получателя (строкой; нормализуется на нашей стороне).
+   * Адрес получателя (строкой; нормализуется на нашей стороне). Можно опустить при resolve_address_by_inn&#x3D;true.
    * @return address
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public String getAddress() {
     return address;
   }
 
-  public void setAddress(@javax.annotation.Nonnull String address) {
+  public void setAddress(@javax.annotation.Nullable String address) {
     this.address = address;
   }
 
@@ -150,6 +155,25 @@ public class RecipientInput {
   }
 
 
+  public RecipientInput resolveAddressByInn(@javax.annotation.Nullable Boolean resolveAddressByInn) {
+    this.resolveAddressByInn = resolveAddressByInn;
+    return this;
+  }
+
+  /**
+   * Авто-резолв адреса по ИНН из ЕГРЮЛ. Работает только для party_type&#x3D;organization с заданным inn: адрес и наименование берутся из реестра (DaData findById/party, головная организация), address можно не передавать. Если резолв не удался и address не передан — 422 recipient_address_unresolved; флаг без inn или не для organization — 422 recipient_resolve_requires_inn. Если передан и address — он fallback при неудаче резолва.
+   * @return resolveAddressByInn
+   */
+  @javax.annotation.Nullable
+  public Boolean getResolveAddressByInn() {
+    return resolveAddressByInn;
+  }
+
+  public void setResolveAddressByInn(@javax.annotation.Nullable Boolean resolveAddressByInn) {
+    this.resolveAddressByInn = resolveAddressByInn;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -163,12 +187,13 @@ public class RecipientInput {
     return Objects.equals(this.name, recipientInput.name) &&
         Objects.equals(this.address, recipientInput.address) &&
         Objects.equals(this.partyType, recipientInput.partyType) &&
-        Objects.equals(this.inn, recipientInput.inn);
+        Objects.equals(this.inn, recipientInput.inn) &&
+        Objects.equals(this.resolveAddressByInn, recipientInput.resolveAddressByInn);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, address, partyType, inn);
+    return Objects.hash(name, address, partyType, inn, resolveAddressByInn);
   }
 
   @Override
@@ -179,6 +204,7 @@ public class RecipientInput {
     sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("    partyType: ").append(toIndentedString(partyType)).append("\n");
     sb.append("    inn: ").append(toIndentedString(inn)).append("\n");
+    sb.append("    resolveAddressByInn: ").append(toIndentedString(resolveAddressByInn)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -205,11 +231,11 @@ public class RecipientInput {
     openapiFields.add("address");
     openapiFields.add("party_type");
     openapiFields.add("inn");
+    openapiFields.add("resolve_address_by_inn");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("name");
-    openapiRequiredFields.add("address");
   }
 
   /**
@@ -243,7 +269,7 @@ public class RecipientInput {
       if (!jsonObj.get("name").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
       }
-      if (!jsonObj.get("address").isJsonPrimitive()) {
+      if ((jsonObj.get("address") != null && !jsonObj.get("address").isJsonNull()) && !jsonObj.get("address").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `address` to be a primitive type in the JSON string but got `%s`", jsonObj.get("address").toString()));
       }
       // validate the optional field `party_type`

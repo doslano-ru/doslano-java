@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * Ошибка в формате RFC 9457 (problem+json).
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-11T11:05:00.528130304Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-19T16:13:19.102645023Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class Problem {
   public static final String SERIALIZED_NAME_TYPE = "type";
   @SerializedName(SERIALIZED_NAME_TYPE)
@@ -161,7 +161,7 @@ public class Problem {
   }
 
   /**
-   * Машиночитаемый код ошибки (напр. &#x60;insufficient_funds&#x60;, &#x60;validation_failed&#x60;, &#x60;forbidden_scope&#x60;).
+   * Машиночитаемый код ошибки (напр. &#x60;insufficient_funds&#x60;, &#x60;validation_failed&#x60;, &#x60;address_validation_failed&#x60;, &#x60;forbidden_scope&#x60;).
    * @return code
    */
   @javax.annotation.Nullable

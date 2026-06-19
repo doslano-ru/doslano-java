@@ -70,4 +70,12 @@ public class RecipientInputTest {
         // TODO: test inn
     }
 
+    /**
+     * Test the property 'resolveAddressByInn'
+     */
+    @Test
+    public void resolveAddressByInnTest() {
+        // TODO: test resolveAddressByInn
+    }
+
 }

@@ -96,7 +96,7 @@ public class LettersApi {
         <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
         <tr><td> 402 </td><td> Недостаточно средств на балансе (при &#x60;on_insufficient_funds&#x3D;reject&#x60;). </td><td>  -  </td></tr>
-        <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). В частности &#x60;code: address_validation_failed&#x60; — адрес/ФИО не прошли preflight-проверку Почты России: письмо отменено, в &#x60;detail&#x60; перечислены стороны и поля; исправьте данные и создайте письмо заново. Коды &#x60;recipient_address_unresolved&#x60; и &#x60;recipient_resolve_requires_inn&#x60; относятся к опции &#x60;resolve_address_by_inn&#x60; (см. RecipientInput). </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call createLetterCall(CreateLetterRequest createLetterRequest, String idempotencyKey, final ApiCallback _callback) throws ApiException {
@@ -178,7 +178,7 @@ public class LettersApi {
         <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
         <tr><td> 402 </td><td> Недостаточно средств на балансе (при &#x60;on_insufficient_funds&#x3D;reject&#x60;). </td><td>  -  </td></tr>
-        <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). В частности &#x60;code: address_validation_failed&#x60; — адрес/ФИО не прошли preflight-проверку Почты России: письмо отменено, в &#x60;detail&#x60; перечислены стороны и поля; исправьте данные и создайте письмо заново. Коды &#x60;recipient_address_unresolved&#x60; и &#x60;recipient_resolve_requires_inn&#x60; относятся к опции &#x60;resolve_address_by_inn&#x60; (см. RecipientInput). </td><td>  -  </td></tr>
      </table>
      */
     public DryRunResult createLetter(CreateLetterRequest createLetterRequest, String idempotencyKey) throws ApiException {
@@ -203,7 +203,7 @@ public class LettersApi {
         <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
         <tr><td> 402 </td><td> Недостаточно средств на балансе (при &#x60;on_insufficient_funds&#x3D;reject&#x60;). </td><td>  -  </td></tr>
-        <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). В частности &#x60;code: address_validation_failed&#x60; — адрес/ФИО не прошли preflight-проверку Почты России: письмо отменено, в &#x60;detail&#x60; перечислены стороны и поля; исправьте данные и создайте письмо заново. Коды &#x60;recipient_address_unresolved&#x60; и &#x60;recipient_resolve_requires_inn&#x60; относятся к опции &#x60;resolve_address_by_inn&#x60; (см. RecipientInput). </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<DryRunResult> createLetterWithHttpInfo(CreateLetterRequest createLetterRequest, String idempotencyKey) throws ApiException {
@@ -230,7 +230,7 @@ public class LettersApi {
         <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
         <tr><td> 402 </td><td> Недостаточно средств на балансе (при &#x60;on_insufficient_funds&#x3D;reject&#x60;). </td><td>  -  </td></tr>
-        <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Ошибка валидации данных письма (адрес, файл, получатели и т.п.). В частности &#x60;code: address_validation_failed&#x60; — адрес/ФИО не прошли preflight-проверку Почты России: письмо отменено, в &#x60;detail&#x60; перечислены стороны и поля; исправьте данные и создайте письмо заново. Коды &#x60;recipient_address_unresolved&#x60; и &#x60;recipient_resolve_requires_inn&#x60; относятся к опции &#x60;resolve_address_by_inn&#x60; (см. RecipientInput). </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call createLetterAsync(CreateLetterRequest createLetterRequest, String idempotencyKey, final ApiCallback<DryRunResult> _callback) throws ApiException {

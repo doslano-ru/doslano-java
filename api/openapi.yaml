@@ -114,6 +114,25 @@ paths:
       requestBody:
         content:
           application/json:
+            example:
+              sender:
+                name: ООО «Мой Бизнес»
+                party_type: organization
+                inn: "7710000001"
+                address: "101000, г Москва, Мясницкая ул, д 10"
+                email: claims@mybiz.example
+              recipients:
+              - name: ООО «Ромашка»
+                party_type: organization
+                inn: "7707083893"
+                resolve_address_by_inn: true
+              - name: Иванов Иван Иванович
+                party_type: individual
+                address: "190000, г Санкт-Петербург, Невский пр-кт, д 1, кв 5"
+              content:
+                main_file:
+                  url: https://files.example.com/claim.pdf
+                  filename: Претензия.pdf
             schema:
               $ref: '#/components/schemas/CreateLetterRequest'
         required: true
@@ -288,7 +307,11 @@ components:
           schema:
             $ref: '#/components/schemas/Problem'
       description: "Ошибка валидации данных письма (адрес, файл, получатели и т.п\
-        .)."
+        .). В частности `code: address_validation_failed` — адрес/ФИО не прошли preflight-п\
+        роверку Почты России: письмо отменено, в `detail` перечислены стороны и по\
+        ля; исправьте данные и создайте письмо заново. Коды `recipient_address_unresolved`\
+        \ и `recipient_resolve_requires_inn` относятся к опции `resolve_address_by_inn`\
+        \ (см. RecipientInput)."
   schemas:
     CreateLetterRequest:
       additionalProperties: false
@@ -301,23 +324,28 @@ components:
           inn: inn
           email: email
         recipients:
-        - address: address
+        - resolve_address_by_inn: false
+          address: address
           party_type: null
           name: name
           inn: inn
-        - address: address
+        - resolve_address_by_inn: false
+          address: address
           party_type: null
           name: name
           inn: inn
-        - address: address
+        - resolve_address_by_inn: false
+          address: address
           party_type: null
           name: name
           inn: inn
-        - address: address
+        - resolve_address_by_inn: false
+          address: address
           party_type: null
           name: name
           inn: inn
-        - address: address
+        - resolve_address_by_inn: false
+          address: address
           party_type: null
           name: name
           inn: inn
@@ -506,6 +534,7 @@ components:
       properties:
         name:
           description: ФИО или название отправителя.
+          maxLength: 256
           type: string
         address:
           description: Адрес отправителя (строкой; нормализуется на нашей стороне).
@@ -517,6 +546,7 @@ components:
           $ref: '#/components/schemas/PartyType'
         inn:
           description: ИНН (для юр. лиц/ИП).
+          pattern: "^[0-9]{10,12}$"
           type: string
       required:
       - address
@@ -524,23 +554,36 @@ components:
     RecipientInput:
       additionalProperties: false
       example:
+        resolve_address_by_inn: false
         address: address
         party_type: null
         name: name
         inn: inn
       properties:
         name:
-          description: ФИО или название получателя.
+          description: ФИО или название получателя. При resolve_address_by_inn=true
+            ПЕРЕЗАПИСЫВАЕТСЯ наименованием из ЕГРЮЛ.
+          maxLength: 256
           type: string
         address:
           description: Адрес получателя (строкой; нормализуется на нашей стороне).
+            Можно опустить при resolve_address_by_inn=true.
           type: string
         party_type:
           $ref: '#/components/schemas/PartyType'
         inn:
+          pattern: "^[0-9]{10,12}$"
           type: string
+        resolve_address_by_inn:
+          default: false
+          description: "Авто-резолв адреса по ИНН из ЕГРЮЛ. Работает только для party_type=organization\
+            \ с заданным inn: адрес и наименование берутся из реестра (DaData findById/party,\
+            \ головная организация), address можно не передавать. Если резолв не у\
+            дался и address не передан — 422 recipient_address_unresolved; флаг бе\
+            з inn или не для organization — 422 recipient_resolve_requires_inn. Ес\
+            ли передан и address — он fallback при неудаче резолва."
+          type: boolean
       required:
-      - address
       - name
     PartyType:
       description: Тип лица — физическое или юридическое.
@@ -820,6 +863,7 @@ components:
           letter_id: letter_id
           error: error
           shipment_number: shipment_number
+          amount_minor: 0
           recipient_id: recipient_id
           status: status
         created_at: 2000-01-23T04:56:07.000+00:00
@@ -863,7 +907,7 @@ components:
           type: string
         code:
           description: "Машиночитаемый код ошибки (напр. `insufficient_funds`, `validation_failed`,\
-            \ `forbidden_scope`)."
+            \ `address_validation_failed`, `forbidden_scope`)."
           type: string
     listLetters_200_response:
       example:
@@ -1008,6 +1052,7 @@ components:
         letter_id: letter_id
         error: error
         shipment_number: shipment_number
+        amount_minor: 0
         recipient_id: recipient_id
         status: status
       properties:
@@ -1023,6 +1068,13 @@ components:
           type: string
         error:
           type: string
+        amount_minor:
+          description: "Фактически списанная стоимость отправления ЭТОМУ получател\
+            ю, в копейках (доля дисконтированного тотала письма с учётом промокода\
+            ). Присутствует только в `recipient.sent` — отправление реально ушло и\
+            \ оплачено. В `recipient.failed` отсутствует: при провале сумма возвра\
+            щается на баланс."
+          type: integer
       required:
       - letter_id
       - status
