@@ -572,7 +572,8 @@ components:
         party_type:
           $ref: '#/components/schemas/PartyType'
         inn:
-          pattern: "^[0-9]{10,12}$"
+          description: ИНН (10 цифр).
+          pattern: "^[0-9]{10}$"
           type: string
         resolve_address_by_inn:
           default: false
