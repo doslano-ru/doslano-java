@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * RecipientInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-19T19:46:17.954263897Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-21T00:56:57.614676568Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class RecipientInput {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)
@@ -70,6 +70,11 @@ public class RecipientInput {
   @SerializedName(SERIALIZED_NAME_INN)
   @javax.annotation.Nullable
   private String inn;
+
+  public static final String SERIALIZED_NAME_EMAIL = "email";
+  @SerializedName(SERIALIZED_NAME_EMAIL)
+  @javax.annotation.Nullable
+  private String email;
 
   public static final String SERIALIZED_NAME_RESOLVE_ADDRESS_BY_INN = "resolve_address_by_inn";
   @SerializedName(SERIALIZED_NAME_RESOLVE_ADDRESS_BY_INN)
@@ -155,6 +160,25 @@ public class RecipientInput {
   }
 
 
+  public RecipientInput email(@javax.annotation.Nullable String email) {
+    this.email = email;
+    return this;
+  }
+
+  /**
+   * Email получателя для уведомления-копии (опционально). После отправки письма получателю на этот адрес приходит письмо со ссылкой на электронную версию (страница /receive). Пустой/опущен — уведомление не шлётся; адрес указывает отправитель и отвечает за корректность.
+   * @return email
+   */
+  @javax.annotation.Nullable
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(@javax.annotation.Nullable String email) {
+    this.email = email;
+  }
+
+
   public RecipientInput resolveAddressByInn(@javax.annotation.Nullable Boolean resolveAddressByInn) {
     this.resolveAddressByInn = resolveAddressByInn;
     return this;
@@ -188,12 +212,13 @@ public class RecipientInput {
         Objects.equals(this.address, recipientInput.address) &&
         Objects.equals(this.partyType, recipientInput.partyType) &&
         Objects.equals(this.inn, recipientInput.inn) &&
+        Objects.equals(this.email, recipientInput.email) &&
         Objects.equals(this.resolveAddressByInn, recipientInput.resolveAddressByInn);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, address, partyType, inn, resolveAddressByInn);
+    return Objects.hash(name, address, partyType, inn, email, resolveAddressByInn);
   }
 
   @Override
@@ -204,6 +229,7 @@ public class RecipientInput {
     sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("    partyType: ").append(toIndentedString(partyType)).append("\n");
     sb.append("    inn: ").append(toIndentedString(inn)).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    resolveAddressByInn: ").append(toIndentedString(resolveAddressByInn)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -231,6 +257,7 @@ public class RecipientInput {
     openapiFields.add("address");
     openapiFields.add("party_type");
     openapiFields.add("inn");
+    openapiFields.add("email");
     openapiFields.add("resolve_address_by_inn");
 
     // a set of required properties/fields (JSON key names)
@@ -278,6 +305,9 @@ public class RecipientInput {
       }
       if ((jsonObj.get("inn") != null && !jsonObj.get("inn").isJsonNull()) && !jsonObj.get("inn").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `inn` to be a primitive type in the JSON string but got `%s`", jsonObj.get("inn").toString()));
+      }
+      if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get("email").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
       }
   }
 

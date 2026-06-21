@@ -329,26 +329,31 @@ components:
           party_type: null
           name: name
           inn: inn
+          email: email
         - resolve_address_by_inn: false
           address: address
           party_type: null
           name: name
           inn: inn
+          email: email
         - resolve_address_by_inn: false
           address: address
           party_type: null
           name: name
           inn: inn
+          email: email
         - resolve_address_by_inn: false
           address: address
           party_type: null
           name: name
           inn: inn
+          email: email
         - resolve_address_by_inn: false
           address: address
           party_type: null
           name: name
           inn: inn
+          email: email
         promo_code: promo_code
         on_promo_invalid: ignore
         dry_run: false
@@ -559,6 +564,7 @@ components:
         party_type: null
         name: name
         inn: inn
+        email: email
       properties:
         name:
           description: ФИО или название получателя. При resolve_address_by_inn=true
@@ -574,6 +580,14 @@ components:
         inn:
           description: ИНН (10 цифр).
           pattern: "^[0-9]{10}$"
+          type: string
+        email:
+          description: Email получателя для уведомления-копии (опционально). После
+            отправки письма получателю на этот адрес приходит письмо со ссылкой на
+            электронную версию (страница /receive). Пустой/опущен — уведомление не
+            шлётся; адрес указывает отправитель и отвечает за корректность.
+          format: email
+          maxLength: 254
           type: string
         resolve_address_by_inn:
           default: false

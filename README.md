@@ -2,7 +2,7 @@
 
 Doslano Integration API
 - API version: 1.0.0
-  - Build date: 2026-06-19T19:46:17.954263897Z[Etc/UTC]
+  - Build date: 2026-06-21T00:56:57.614676568Z[Etc/UTC]
   - Generator version: 7.10.0
 
 Публичный REST API doslano: отправка заказных писем одним запросом, проверка

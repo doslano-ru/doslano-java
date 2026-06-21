@@ -71,6 +71,14 @@ public class RecipientInputTest {
     }
 
     /**
+     * Test the property 'email'
+     */
+    @Test
+    public void emailTest() {
+        // TODO: test email
+    }
+
+    /**
      * Test the property 'resolveAddressByInn'
      */
     @Test
