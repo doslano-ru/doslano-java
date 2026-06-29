@@ -47,18 +47,18 @@ import java.util.Set;
 import ru.doslano.sdk.JSON;
 
 /**
- * SenderInput
+ * Отправитель. Любое поле можно опустить — оно берётся из профиля аккаунта (ЛК). Например, передайте только &#x60;email&#x60;, чтобы переопределить почту плательщика для кассового чека, а имя/адрес оставить из профиля. Если &#x60;sender&#x60; не передан целиком — весь отправитель берётся из профиля.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-28T12:58:29.771736505Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-29T12:14:24.598854985Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class SenderInput {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String name;
 
   public static final String SERIALIZED_NAME_ADDRESS = "address";
   @SerializedName(SERIALIZED_NAME_ADDRESS)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String address;
 
   public static final String SERIALIZED_NAME_EMAIL = "email";
@@ -79,40 +79,40 @@ public class SenderInput {
   public SenderInput() {
   }
 
-  public SenderInput name(@javax.annotation.Nonnull String name) {
+  public SenderInput name(@javax.annotation.Nullable String name) {
     this.name = name;
     return this;
   }
 
   /**
-   * ФИО или название отправителя.
+   * ФИО или название отправителя. Не указано — из профиля ЛК.
    * @return name
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public String getName() {
     return name;
   }
 
-  public void setName(@javax.annotation.Nonnull String name) {
+  public void setName(@javax.annotation.Nullable String name) {
     this.name = name;
   }
 
 
-  public SenderInput address(@javax.annotation.Nonnull String address) {
+  public SenderInput address(@javax.annotation.Nullable String address) {
     this.address = address;
     return this;
   }
 
   /**
-   * Адрес отправителя (строкой; нормализуется на нашей стороне).
+   * Адрес отправителя (строкой; нормализуется). Не указан — из профиля ЛК.
    * @return address
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public String getAddress() {
     return address;
   }
 
-  public void setAddress(@javax.annotation.Nonnull String address) {
+  public void setAddress(@javax.annotation.Nullable String address) {
     this.address = address;
   }
 
@@ -123,7 +123,7 @@ public class SenderInput {
   }
 
   /**
-   * Get email
+   * Email отправителя (плательщика) для кассового чека. Не указан — из профиля ЛК.
    * @return email
    */
   @javax.annotation.Nullable
@@ -161,7 +161,7 @@ public class SenderInput {
   }
 
   /**
-   * ИНН (для юр. лиц/ИП).
+   * ИНН (для юр. лиц/ИП). Не указан — из профиля ЛК.
    * @return inn
    */
   @javax.annotation.Nullable
@@ -235,8 +235,6 @@ public class SenderInput {
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("name");
-    openapiRequiredFields.add("address");
   }
 
   /**
@@ -259,18 +257,11 @@ public class SenderInput {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SenderInput` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : SenderInput.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("name").isJsonPrimitive()) {
+      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
       }
-      if (!jsonObj.get("address").isJsonPrimitive()) {
+      if ((jsonObj.get("address") != null && !jsonObj.get("address").isJsonNull()) && !jsonObj.get("address").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `address` to be a primitive type in the JSON string but got `%s`", jsonObj.get("address").toString()));
       }
       if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get("email").isJsonPrimitive()) {

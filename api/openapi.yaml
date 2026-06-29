@@ -600,6 +600,10 @@ components:
           type: string
     SenderInput:
       additionalProperties: false
+      description: "Отправитель. Любое поле можно опустить — оно берётся из профил\
+        я аккаунта (ЛК). Например, передайте только `email`, чтобы переопределить\
+        \ почту плательщика для кассового чека, а имя/адрес оставить из профиля. Е\
+        сли `sender` не передан целиком — весь отправитель берётся из профиля."
       example:
         address: address
         party_type: individual
@@ -608,24 +612,24 @@ components:
         email: email
       properties:
         name:
-          description: ФИО или название отправителя.
+          description: ФИО или название отправителя. Не указано — из профиля ЛК.
           maxLength: 256
           type: string
         address:
-          description: Адрес отправителя (строкой; нормализуется на нашей стороне).
+          description: Адрес отправителя (строкой; нормализуется). Не указан — из
+            профиля ЛК.
           type: string
         email:
+          description: Email отправителя (плательщика) для кассового чека. Не указан
+            — из профиля ЛК.
           format: email
           type: string
         party_type:
           $ref: '#/components/schemas/PartyType'
         inn:
-          description: ИНН (для юр. лиц/ИП).
+          description: ИНН (для юр. лиц/ИП). Не указан — из профиля ЛК.
           pattern: "^[0-9]{10,12}$"
           type: string
-      required:
-      - address
-      - name
     RecipientInput:
       additionalProperties: false
       example:

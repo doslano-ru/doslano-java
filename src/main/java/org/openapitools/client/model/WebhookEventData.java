@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * WebhookEventData
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-28T12:58:29.771736505Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-29T12:14:24.598854985Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class WebhookEventData {
   public static final String SERIALIZED_NAME_LETTER_ID = "letter_id";
   @SerializedName(SERIALIZED_NAME_LETTER_ID)
