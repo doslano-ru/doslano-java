@@ -5,6 +5,8 @@ All URIs are relative to *https://integration.doslano.ru*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**createLetter**](LettersApi.md#createLetter) | **POST** /v1/letters | Отправить письмо |
+| [**downloadRecipientInventoryPdf**](LettersApi.md#downloadRecipientInventoryPdf) | **GET** /v1/letters/{id}/recipients/{recipient_id}/inventory.pdf | PDF описи вложения получателя |
+| [**downloadRecipientReceiptPdf**](LettersApi.md#downloadRecipientReceiptPdf) | **GET** /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf | PDF фискального чека получателя |
 | [**getLetter**](LettersApi.md#getLetter) | **GET** /v1/letters/{id} | Статус письма |
 | [**getRecipientTracking**](LettersApi.md#getRecipientTracking) | **GET** /v1/letters/{id}/recipients/{recipient_id}/tracking | Трек-события получателя |
 | [**listLetters**](LettersApi.md#listLetters) | **GET** /v1/letters | Список писем |
@@ -84,6 +86,150 @@ public class Example {
 | **403** | У ключа нет нужного scope. |  -  |
 | **402** | Недостаточно средств на балансе (при &#x60;on_insufficient_funds&#x3D;reject&#x60;). |  -  |
 | **422** | Ошибка валидации данных письма (адрес, файл, получатели и т.п.). В частности &#x60;code: address_validation_failed&#x60; — адрес/ФИО не прошли preflight-проверку Почты России: письмо отменено, в &#x60;detail&#x60; перечислены стороны и поля; исправьте данные и создайте письмо заново. Коды &#x60;recipient_address_unresolved&#x60; и &#x60;recipient_resolve_requires_inn&#x60; относятся к опции &#x60;resolve_address_by_inn&#x60; (см. RecipientInput). |  -  |
+
+<a id="downloadRecipientInventoryPdf"></a>
+# **downloadRecipientInventoryPdf**
+> File downloadRecipientInventoryPdf(id, recipientId)
+
+PDF описи вложения получателя
+
+Скачать PDF описи вложения (форма 107, версия отправителя) по отправлению конкретному получателю. Доступен после передачи в Почту (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+
+### Example
+```java
+// Import classes:
+import ru.doslano.sdk.ApiClient;
+import ru.doslano.sdk.ApiException;
+import ru.doslano.sdk.Configuration;
+import ru.doslano.sdk.auth.*;
+import ru.doslano.sdk.models.*;
+import org.openapitools.client.api.LettersApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://integration.doslano.ru");
+    
+    // Configure HTTP bearer authorization: apiKey
+    HttpBearerAuth apiKey = (HttpBearerAuth) defaultClient.getAuthentication("apiKey");
+    apiKey.setBearerToken("BEARER TOKEN");
+
+    LettersApi apiInstance = new LettersApi(defaultClient);
+    String id = "id_example"; // String | Идентификатор письма.
+    String recipientId = "recipientId_example"; // String | 
+    try {
+      File result = apiInstance.downloadRecipientInventoryPdf(id, recipientId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling LettersApi#downloadRecipientInventoryPdf");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | **String**| Идентификатор письма. | |
+| **recipientId** | **String**|  | |
+
+### Return type
+
+[**File**](File.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/pdf, application/problem+json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | PDF описи вложения. |  -  |
+| **401** | Нет/неверный API-ключ, либо IP не в allowlist ключа. |  -  |
+| **403** | У ключа нет нужного scope. |  -  |
+| **404** | Ресурс не найден (или не принадлежит аккаунту). |  -  |
+
+<a id="downloadRecipientReceiptPdf"></a>
+# **downloadRecipientReceiptPdf**
+> File downloadRecipientReceiptPdf(id, recipientId)
+
+PDF фискального чека получателя
+
+Скачать PDF фискального чека (54-ФЗ) по отправлению конкретному получателю. Доступен, когда чек пробит и его PDF сохранён у нас (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+
+### Example
+```java
+// Import classes:
+import ru.doslano.sdk.ApiClient;
+import ru.doslano.sdk.ApiException;
+import ru.doslano.sdk.Configuration;
+import ru.doslano.sdk.auth.*;
+import ru.doslano.sdk.models.*;
+import org.openapitools.client.api.LettersApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://integration.doslano.ru");
+    
+    // Configure HTTP bearer authorization: apiKey
+    HttpBearerAuth apiKey = (HttpBearerAuth) defaultClient.getAuthentication("apiKey");
+    apiKey.setBearerToken("BEARER TOKEN");
+
+    LettersApi apiInstance = new LettersApi(defaultClient);
+    String id = "id_example"; // String | Идентификатор письма.
+    String recipientId = "recipientId_example"; // String | 
+    try {
+      File result = apiInstance.downloadRecipientReceiptPdf(id, recipientId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling LettersApi#downloadRecipientReceiptPdf");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | **String**| Идентификатор письма. | |
+| **recipientId** | **String**|  | |
+
+### Return type
+
+[**File**](File.md)
+
+### Authorization
+
+[apiKey](../README.md#apiKey)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/pdf, application/problem+json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | PDF фискального чека. |  -  |
+| **401** | Нет/неверный API-ключ, либо IP не в allowlist ключа. |  -  |
+| **403** | У ключа нет нужного scope. |  -  |
+| **404** | Ресурс не найден (или не принадлежит аккаунту). |  -  |
 
 <a id="getLetter"></a>
 # **getLetter**

@@ -19,6 +19,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -91,6 +92,30 @@ public class WebhookEventDataTest {
     @Test
     public void amountMinorTest() {
         // TODO: test amountMinor
+    }
+
+    /**
+     * Test the property 'receiptPdf'
+     */
+    @Test
+    public void receiptPdfTest() {
+        // TODO: test receiptPdf
+    }
+
+    /**
+     * Test the property 'receiptUrl'
+     */
+    @Test
+    public void receiptUrlTest() {
+        // TODO: test receiptUrl
+    }
+
+    /**
+     * Test the property 'inventoryPdf'
+     */
+    @Test
+    public void inventoryPdfTest() {
+        // TODO: test inventoryPdf
     }
 
 }

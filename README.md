@@ -2,7 +2,7 @@
 
 Doslano Integration API
 - API version: 1.0.0
-  - Build date: 2026-06-21T00:56:57.614676568Z[Etc/UTC]
+  - Build date: 2026-06-28T12:58:29.771736505Z[Etc/UTC]
   - Generator version: 7.10.0
 
 Публичный REST API doslano: отправка заказных писем одним запросом, проверка
@@ -138,6 +138,8 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *BalanceApi* | [**getBalance**](docs/BalanceApi.md#getBalance) | **GET** /v1/balance | Баланс аккаунта
 *LettersApi* | [**createLetter**](docs/LettersApi.md#createLetter) | **POST** /v1/letters | Отправить письмо
+*LettersApi* | [**downloadRecipientInventoryPdf**](docs/LettersApi.md#downloadRecipientInventoryPdf) | **GET** /v1/letters/{id}/recipients/{recipient_id}/inventory.pdf | PDF описи вложения получателя
+*LettersApi* | [**downloadRecipientReceiptPdf**](docs/LettersApi.md#downloadRecipientReceiptPdf) | **GET** /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf | PDF фискального чека получателя
 *LettersApi* | [**getLetter**](docs/LettersApi.md#getLetter) | **GET** /v1/letters/{id} | Статус письма
 *LettersApi* | [**getRecipientTracking**](docs/LettersApi.md#getRecipientTracking) | **GET** /v1/letters/{id}/recipients/{recipient_id}/tracking | Трек-события получателя
 *LettersApi* | [**listLetters**](docs/LettersApi.md#listLetters) | **GET** /v1/letters | Список писем

@@ -227,6 +227,76 @@ paths:
       x-accepts:
       - application/json
       - application/problem+json
+  /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf:
+    get:
+      description: "Скачать PDF фискального чека (54-ФЗ) по отправлению конкретном\
+        у получателю. Доступен, когда чек пробит и его PDF сохранён у нас (получат\
+        ель в статусе `sent`/`delivered`); иначе `404`. Требуется scope `letters:read`."
+      operationId: downloadRecipientReceiptPdf
+      parameters:
+      - $ref: '#/components/parameters/LetterId'
+      - explode: false
+        in: path
+        name: recipient_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/pdf:
+              schema:
+                format: binary
+                type: string
+          description: PDF фискального чека.
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      summary: PDF фискального чека получателя
+      tags:
+      - Letters
+      x-accepts:
+      - application/pdf
+      - application/problem+json
+  /v1/letters/{id}/recipients/{recipient_id}/inventory.pdf:
+    get:
+      description: "Скачать PDF описи вложения (форма 107, версия отправителя) по\
+        \ отправлению конкретному получателю. Доступен после передачи в Почту (пол\
+        учатель в статусе `sent`/`delivered`); иначе `404`. Требуется scope `letters:read`."
+      operationId: downloadRecipientInventoryPdf
+      parameters:
+      - $ref: '#/components/parameters/LetterId'
+      - explode: false
+        in: path
+        name: recipient_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/pdf:
+              schema:
+                format: binary
+                type: string
+          description: PDF описи вложения.
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFound'
+      summary: PDF описи вложения получателя
+      tags:
+      - Letters
+      x-accepts:
+      - application/pdf
+      - application/problem+json
   /v1/balance:
     get:
       description: Текущий баланс в копейках. Требуется scope `balance:read`.
@@ -621,16 +691,22 @@ components:
           name: name
           inn: inn
         recipients:
-        - address: address
+        - receipt_pdf: https://openapi-generator.tech
+          address: address
+          receipt_url: https://openapi-generator.tech
           price_minor: 0
+          inventory_pdf: https://openapi-generator.tech
           name: name
           tracking_number: tracking_number
           id: id
           error: error
           shipment_number: shipment_number
           status: pending
-        - address: address
+        - receipt_pdf: https://openapi-generator.tech
+          address: address
+          receipt_url: https://openapi-generator.tech
           price_minor: 0
+          inventory_pdf: https://openapi-generator.tech
           name: name
           tracking_number: tracking_number
           id: id
@@ -689,8 +765,11 @@ components:
       - status
     Recipient:
       example:
+        receipt_pdf: https://openapi-generator.tech
         address: address
+        receipt_url: https://openapi-generator.tech
         price_minor: 0
+        inventory_pdf: https://openapi-generator.tech
         name: name
         tracking_number: tracking_number
         id: id
@@ -719,6 +798,26 @@ components:
           type: integer
         error:
           description: Причина ошибки (для `failed`).
+          type: string
+        receipt_pdf:
+          description: "Ссылка на скачивание PDF фискального чека (54-ФЗ) этому по\
+            лучателю через наш API (см. `GET /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf`).\
+            \ Присутствует, только когда чек пробит и его PDF сохранён у нас (полу\
+            чатель в статусе `sent`/`delivered`)."
+          format: uri
+          type: string
+        receipt_url:
+          description: "Ссылка на фискальный чек на сайте ОФД (1-ОФД). Присутствуе\
+            т, когда чек пробит (получатель `sent`/`delivered`). Может присутствов\
+            ать и без `receipt_pdf` — когда наш PDF недоступен (link_only)."
+          format: uri
+          type: string
+        inventory_pdf:
+          description: "Ссылка на скачивание PDF описи вложения (форма 107, версия\
+            \ отправителя) через наш API (см. `GET /v1/letters/{id}/recipients/{recipient_id}/inventory.pdf`).\
+            \ Присутствует, когда опись сформирована и отправление передано в Почт\
+            у (получатель в статусе `sent`/`delivered`)."
+          format: uri
           type: string
       required:
       - id
@@ -874,6 +973,9 @@ components:
     WebhookEvent:
       example:
         data:
+          receipt_pdf: https://openapi-generator.tech
+          receipt_url: https://openapi-generator.tech
+          inventory_pdf: https://openapi-generator.tech
           tracking_number: tracking_number
           letter_id: letter_id
           error: error
@@ -934,16 +1036,22 @@ components:
             name: name
             inn: inn
           recipients:
-          - address: address
+          - receipt_pdf: https://openapi-generator.tech
+            address: address
+            receipt_url: https://openapi-generator.tech
             price_minor: 0
+            inventory_pdf: https://openapi-generator.tech
             name: name
             tracking_number: tracking_number
             id: id
             error: error
             shipment_number: shipment_number
             status: pending
-          - address: address
+          - receipt_pdf: https://openapi-generator.tech
+            address: address
+            receipt_url: https://openapi-generator.tech
             price_minor: 0
+            inventory_pdf: https://openapi-generator.tech
             name: name
             tracking_number: tracking_number
             id: id
@@ -972,16 +1080,22 @@ components:
             name: name
             inn: inn
           recipients:
-          - address: address
+          - receipt_pdf: https://openapi-generator.tech
+            address: address
+            receipt_url: https://openapi-generator.tech
             price_minor: 0
+            inventory_pdf: https://openapi-generator.tech
             name: name
             tracking_number: tracking_number
             id: id
             error: error
             shipment_number: shipment_number
             status: pending
-          - address: address
+          - receipt_pdf: https://openapi-generator.tech
+            address: address
+            receipt_url: https://openapi-generator.tech
             price_minor: 0
+            inventory_pdf: https://openapi-generator.tech
             name: name
             tracking_number: tracking_number
             id: id
@@ -1063,6 +1177,9 @@ components:
           type: string
     WebhookEvent_data:
       example:
+        receipt_pdf: https://openapi-generator.tech
+        receipt_url: https://openapi-generator.tech
+        inventory_pdf: https://openapi-generator.tech
         tracking_number: tracking_number
         letter_id: letter_id
         error: error
@@ -1090,6 +1207,23 @@ components:
             \ оплачено. В `recipient.failed` отсутствует: при провале сумма возвра\
             щается на баланс."
           type: integer
+        receipt_pdf:
+          description: "Ссылка на скачивание PDF фискального чека (54-ФЗ) через на\
+            ш API. Колбэк `recipient.sent` уходит ПОСЛЕ готовности чека, поэтому п\
+            оле в нём присутствует (вместе с `receipt_url`)."
+          format: uri
+          type: string
+        receipt_url:
+          description: Ссылка на фискальный чек на сайте ОФД (1-ОФД). Может присутствовать
+            и без `receipt_pdf` (link_only — наш PDF недоступен).
+          format: uri
+          type: string
+        inventory_pdf:
+          description: "Ссылка на скачивание PDF описи вложения (форма 107, версия\
+            \ отправителя) через наш API. Присутствует в `recipient.sent` и `recipient.delivered`,\
+            \ когда опись сформирована."
+          format: uri
+          type: string
       required:
       - letter_id
       - status

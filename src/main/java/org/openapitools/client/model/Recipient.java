@@ -20,6 +20,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import org.openapitools.client.model.RecipientStatus;
 
@@ -49,7 +50,7 @@ import ru.doslano.sdk.JSON;
 /**
  * Recipient
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-21T00:56:57.614676568Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-28T12:58:29.771736505Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class Recipient {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -90,6 +91,21 @@ public class Recipient {
   @SerializedName(SERIALIZED_NAME_ERROR)
   @javax.annotation.Nullable
   private String error;
+
+  public static final String SERIALIZED_NAME_RECEIPT_PDF = "receipt_pdf";
+  @SerializedName(SERIALIZED_NAME_RECEIPT_PDF)
+  @javax.annotation.Nullable
+  private URI receiptPdf;
+
+  public static final String SERIALIZED_NAME_RECEIPT_URL = "receipt_url";
+  @SerializedName(SERIALIZED_NAME_RECEIPT_URL)
+  @javax.annotation.Nullable
+  private URI receiptUrl;
+
+  public static final String SERIALIZED_NAME_INVENTORY_PDF = "inventory_pdf";
+  @SerializedName(SERIALIZED_NAME_INVENTORY_PDF)
+  @javax.annotation.Nullable
+  private URI inventoryPdf;
 
   public Recipient() {
   }
@@ -246,6 +262,63 @@ public class Recipient {
   }
 
 
+  public Recipient receiptPdf(@javax.annotation.Nullable URI receiptPdf) {
+    this.receiptPdf = receiptPdf;
+    return this;
+  }
+
+  /**
+   * Ссылка на скачивание PDF фискального чека (54-ФЗ) этому получателю через наш API (см. &#x60;GET /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf&#x60;). Присутствует, только когда чек пробит и его PDF сохранён у нас (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;).
+   * @return receiptPdf
+   */
+  @javax.annotation.Nullable
+  public URI getReceiptPdf() {
+    return receiptPdf;
+  }
+
+  public void setReceiptPdf(@javax.annotation.Nullable URI receiptPdf) {
+    this.receiptPdf = receiptPdf;
+  }
+
+
+  public Recipient receiptUrl(@javax.annotation.Nullable URI receiptUrl) {
+    this.receiptUrl = receiptUrl;
+    return this;
+  }
+
+  /**
+   * Ссылка на фискальный чек на сайте ОФД (1-ОФД). Присутствует, когда чек пробит (получатель &#x60;sent&#x60;/&#x60;delivered&#x60;). Может присутствовать и без &#x60;receipt_pdf&#x60; — когда наш PDF недоступен (link_only).
+   * @return receiptUrl
+   */
+  @javax.annotation.Nullable
+  public URI getReceiptUrl() {
+    return receiptUrl;
+  }
+
+  public void setReceiptUrl(@javax.annotation.Nullable URI receiptUrl) {
+    this.receiptUrl = receiptUrl;
+  }
+
+
+  public Recipient inventoryPdf(@javax.annotation.Nullable URI inventoryPdf) {
+    this.inventoryPdf = inventoryPdf;
+    return this;
+  }
+
+  /**
+   * Ссылка на скачивание PDF описи вложения (форма 107, версия отправителя) через наш API (см. &#x60;GET /v1/letters/{id}/recipients/{recipient_id}/inventory.pdf&#x60;). Присутствует, когда опись сформирована и отправление передано в Почту (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;).
+   * @return inventoryPdf
+   */
+  @javax.annotation.Nullable
+  public URI getInventoryPdf() {
+    return inventoryPdf;
+  }
+
+  public void setInventoryPdf(@javax.annotation.Nullable URI inventoryPdf) {
+    this.inventoryPdf = inventoryPdf;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -263,12 +336,15 @@ public class Recipient {
         Objects.equals(this.shipmentNumber, recipient.shipmentNumber) &&
         Objects.equals(this.trackingNumber, recipient.trackingNumber) &&
         Objects.equals(this.priceMinor, recipient.priceMinor) &&
-        Objects.equals(this.error, recipient.error);
+        Objects.equals(this.error, recipient.error) &&
+        Objects.equals(this.receiptPdf, recipient.receiptPdf) &&
+        Objects.equals(this.receiptUrl, recipient.receiptUrl) &&
+        Objects.equals(this.inventoryPdf, recipient.inventoryPdf);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, address, status, shipmentNumber, trackingNumber, priceMinor, error);
+    return Objects.hash(id, name, address, status, shipmentNumber, trackingNumber, priceMinor, error, receiptPdf, receiptUrl, inventoryPdf);
   }
 
   @Override
@@ -283,6 +359,9 @@ public class Recipient {
     sb.append("    trackingNumber: ").append(toIndentedString(trackingNumber)).append("\n");
     sb.append("    priceMinor: ").append(toIndentedString(priceMinor)).append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
+    sb.append("    receiptPdf: ").append(toIndentedString(receiptPdf)).append("\n");
+    sb.append("    receiptUrl: ").append(toIndentedString(receiptUrl)).append("\n");
+    sb.append("    inventoryPdf: ").append(toIndentedString(inventoryPdf)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -313,6 +392,9 @@ public class Recipient {
     openapiFields.add("tracking_number");
     openapiFields.add("price_minor");
     openapiFields.add("error");
+    openapiFields.add("receipt_pdf");
+    openapiFields.add("receipt_url");
+    openapiFields.add("inventory_pdf");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -368,6 +450,15 @@ public class Recipient {
       }
       if ((jsonObj.get("error") != null && !jsonObj.get("error").isJsonNull()) && !jsonObj.get("error").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `error` to be a primitive type in the JSON string but got `%s`", jsonObj.get("error").toString()));
+      }
+      if ((jsonObj.get("receipt_pdf") != null && !jsonObj.get("receipt_pdf").isJsonNull()) && !jsonObj.get("receipt_pdf").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `receipt_pdf` to be a primitive type in the JSON string but got `%s`", jsonObj.get("receipt_pdf").toString()));
+      }
+      if ((jsonObj.get("receipt_url") != null && !jsonObj.get("receipt_url").isJsonNull()) && !jsonObj.get("receipt_url").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `receipt_url` to be a primitive type in the JSON string but got `%s`", jsonObj.get("receipt_url").toString()));
+      }
+      if ((jsonObj.get("inventory_pdf") != null && !jsonObj.get("inventory_pdf").isJsonNull()) && !jsonObj.get("inventory_pdf").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `inventory_pdf` to be a primitive type in the JSON string but got `%s`", jsonObj.get("inventory_pdf").toString()));
       }
   }
 

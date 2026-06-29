@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * TrackingInfoEventsInner
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-21T00:56:57.614676568Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-28T12:58:29.771736505Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class TrackingInfoEventsInner {
   public static final String SERIALIZED_NAME_CODE = "code";
   @SerializedName(SERIALIZED_NAME_CODE)

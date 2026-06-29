@@ -16,6 +16,7 @@ package org.openapitools.client.api;
 import ru.doslano.sdk.ApiException;
 import org.openapitools.client.model.CreateLetterRequest;
 import org.openapitools.client.model.DryRunResult;
+import java.io.File;
 import org.openapitools.client.model.Letter;
 import org.openapitools.client.model.LetterStatus;
 import org.openapitools.client.model.ListLetters200Response;
@@ -50,6 +51,36 @@ public class LettersApiTest {
         CreateLetterRequest createLetterRequest = null;
         String idempotencyKey = null;
         DryRunResult response = api.createLetter(createLetterRequest, idempotencyKey);
+        // TODO: test validations
+    }
+
+    /**
+     * PDF описи вложения получателя
+     *
+     * Скачать PDF описи вложения (форма 107, версия отправителя) по отправлению конкретному получателю. Доступен после передачи в Почту (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void downloadRecipientInventoryPdfTest() throws ApiException {
+        String id = null;
+        String recipientId = null;
+        File response = api.downloadRecipientInventoryPdf(id, recipientId);
+        // TODO: test validations
+    }
+
+    /**
+     * PDF фискального чека получателя
+     *
+     * Скачать PDF фискального чека (54-ФЗ) по отправлению конкретному получателю. Доступен, когда чек пробит и его PDF сохранён у нас (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void downloadRecipientReceiptPdfTest() throws ApiException {
+        String id = null;
+        String recipientId = null;
+        File response = api.downloadRecipientReceiptPdf(id, recipientId);
         // TODO: test validations
     }
 

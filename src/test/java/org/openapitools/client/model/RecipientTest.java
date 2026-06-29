@@ -19,6 +19,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import org.openapitools.client.model.RecipientStatus;
 import org.junit.jupiter.api.Disabled;
@@ -100,6 +101,30 @@ public class RecipientTest {
     @Test
     public void errorTest() {
         // TODO: test error
+    }
+
+    /**
+     * Test the property 'receiptPdf'
+     */
+    @Test
+    public void receiptPdfTest() {
+        // TODO: test receiptPdf
+    }
+
+    /**
+     * Test the property 'receiptUrl'
+     */
+    @Test
+    public void receiptUrlTest() {
+        // TODO: test receiptUrl
+    }
+
+    /**
+     * Test the property 'inventoryPdf'
+     */
+    @Test
+    public void inventoryPdfTest() {
+        // TODO: test inventoryPdf
     }
 
 }

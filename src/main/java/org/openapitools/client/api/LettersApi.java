@@ -29,6 +29,7 @@ import java.io.IOException;
 
 import org.openapitools.client.model.CreateLetterRequest;
 import org.openapitools.client.model.DryRunResult;
+import java.io.File;
 import org.openapitools.client.model.Letter;
 import org.openapitools.client.model.LetterStatus;
 import org.openapitools.client.model.ListLetters200Response;
@@ -237,6 +238,306 @@ public class LettersApi {
 
         okhttp3.Call localVarCall = createLetterValidateBeforeCall(createLetterRequest, idempotencyKey, _callback);
         Type localVarReturnType = new TypeToken<DryRunResult>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for downloadRecipientInventoryPdf
+     * @param id Идентификатор письма. (required)
+     * @param recipientId  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> PDF описи вложения. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ресурс не найден (или не принадлежит аккаунту). </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call downloadRecipientInventoryPdfCall(String id, String recipientId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/v1/letters/{id}/recipients/{recipient_id}/inventory.pdf"
+            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()))
+            .replace("{" + "recipient_id" + "}", localVarApiClient.escapeString(recipientId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "application/pdf",
+            "application/problem+json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "apiKey" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call downloadRecipientInventoryPdfValidateBeforeCall(String id, String recipientId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling downloadRecipientInventoryPdf(Async)");
+        }
+
+        // verify the required parameter 'recipientId' is set
+        if (recipientId == null) {
+            throw new ApiException("Missing the required parameter 'recipientId' when calling downloadRecipientInventoryPdf(Async)");
+        }
+
+        return downloadRecipientInventoryPdfCall(id, recipientId, _callback);
+
+    }
+
+    /**
+     * PDF описи вложения получателя
+     * Скачать PDF описи вложения (форма 107, версия отправителя) по отправлению конкретному получателю. Доступен после передачи в Почту (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+     * @param id Идентификатор письма. (required)
+     * @param recipientId  (required)
+     * @return File
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> PDF описи вложения. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ресурс не найден (или не принадлежит аккаунту). </td><td>  -  </td></tr>
+     </table>
+     */
+    public File downloadRecipientInventoryPdf(String id, String recipientId) throws ApiException {
+        ApiResponse<File> localVarResp = downloadRecipientInventoryPdfWithHttpInfo(id, recipientId);
+        return localVarResp.getData();
+    }
+
+    /**
+     * PDF описи вложения получателя
+     * Скачать PDF описи вложения (форма 107, версия отправителя) по отправлению конкретному получателю. Доступен после передачи в Почту (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+     * @param id Идентификатор письма. (required)
+     * @param recipientId  (required)
+     * @return ApiResponse&lt;File&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> PDF описи вложения. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ресурс не найден (или не принадлежит аккаунту). </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<File> downloadRecipientInventoryPdfWithHttpInfo(String id, String recipientId) throws ApiException {
+        okhttp3.Call localVarCall = downloadRecipientInventoryPdfValidateBeforeCall(id, recipientId, null);
+        Type localVarReturnType = new TypeToken<File>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * PDF описи вложения получателя (asynchronously)
+     * Скачать PDF описи вложения (форма 107, версия отправителя) по отправлению конкретному получателю. Доступен после передачи в Почту (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+     * @param id Идентификатор письма. (required)
+     * @param recipientId  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> PDF описи вложения. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ресурс не найден (или не принадлежит аккаунту). </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call downloadRecipientInventoryPdfAsync(String id, String recipientId, final ApiCallback<File> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = downloadRecipientInventoryPdfValidateBeforeCall(id, recipientId, _callback);
+        Type localVarReturnType = new TypeToken<File>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for downloadRecipientReceiptPdf
+     * @param id Идентификатор письма. (required)
+     * @param recipientId  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> PDF фискального чека. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ресурс не найден (или не принадлежит аккаунту). </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call downloadRecipientReceiptPdfCall(String id, String recipientId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/v1/letters/{id}/recipients/{recipient_id}/receipt.pdf"
+            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()))
+            .replace("{" + "recipient_id" + "}", localVarApiClient.escapeString(recipientId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "application/pdf",
+            "application/problem+json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "apiKey" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call downloadRecipientReceiptPdfValidateBeforeCall(String id, String recipientId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling downloadRecipientReceiptPdf(Async)");
+        }
+
+        // verify the required parameter 'recipientId' is set
+        if (recipientId == null) {
+            throw new ApiException("Missing the required parameter 'recipientId' when calling downloadRecipientReceiptPdf(Async)");
+        }
+
+        return downloadRecipientReceiptPdfCall(id, recipientId, _callback);
+
+    }
+
+    /**
+     * PDF фискального чека получателя
+     * Скачать PDF фискального чека (54-ФЗ) по отправлению конкретному получателю. Доступен, когда чек пробит и его PDF сохранён у нас (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+     * @param id Идентификатор письма. (required)
+     * @param recipientId  (required)
+     * @return File
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> PDF фискального чека. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ресурс не найден (или не принадлежит аккаунту). </td><td>  -  </td></tr>
+     </table>
+     */
+    public File downloadRecipientReceiptPdf(String id, String recipientId) throws ApiException {
+        ApiResponse<File> localVarResp = downloadRecipientReceiptPdfWithHttpInfo(id, recipientId);
+        return localVarResp.getData();
+    }
+
+    /**
+     * PDF фискального чека получателя
+     * Скачать PDF фискального чека (54-ФЗ) по отправлению конкретному получателю. Доступен, когда чек пробит и его PDF сохранён у нас (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+     * @param id Идентификатор письма. (required)
+     * @param recipientId  (required)
+     * @return ApiResponse&lt;File&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> PDF фискального чека. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ресурс не найден (или не принадлежит аккаунту). </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<File> downloadRecipientReceiptPdfWithHttpInfo(String id, String recipientId) throws ApiException {
+        okhttp3.Call localVarCall = downloadRecipientReceiptPdfValidateBeforeCall(id, recipientId, null);
+        Type localVarReturnType = new TypeToken<File>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * PDF фискального чека получателя (asynchronously)
+     * Скачать PDF фискального чека (54-ФЗ) по отправлению конкретному получателю. Доступен, когда чек пробит и его PDF сохранён у нас (получатель в статусе &#x60;sent&#x60;/&#x60;delivered&#x60;); иначе &#x60;404&#x60;. Требуется scope &#x60;letters:read&#x60;.
+     * @param id Идентификатор письма. (required)
+     * @param recipientId  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> PDF фискального чека. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Нет/неверный API-ключ, либо IP не в allowlist ключа. </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> У ключа нет нужного scope. </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ресурс не найден (или не принадлежит аккаунту). </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call downloadRecipientReceiptPdfAsync(String id, String recipientId, final ApiCallback<File> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = downloadRecipientReceiptPdfValidateBeforeCall(id, recipientId, _callback);
+        Type localVarReturnType = new TypeToken<File>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
