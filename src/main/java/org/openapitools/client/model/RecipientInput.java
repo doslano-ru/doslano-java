@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * RecipientInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-29T12:14:24.598854985Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-02T10:36:55.335575683Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class RecipientInput {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)
@@ -80,6 +80,11 @@ public class RecipientInput {
   @SerializedName(SERIALIZED_NAME_RESOLVE_ADDRESS_BY_INN)
   @javax.annotation.Nullable
   private Boolean resolveAddressByInn = false;
+
+  public static final String SERIALIZED_NAME_ALLOW_ADDRESS_TRUNCATION = "allow_address_truncation";
+  @SerializedName(SERIALIZED_NAME_ALLOW_ADDRESS_TRUNCATION)
+  @javax.annotation.Nullable
+  private Boolean allowAddressTruncation = false;
 
   public RecipientInput() {
   }
@@ -198,6 +203,25 @@ public class RecipientInput {
   }
 
 
+  public RecipientInput allowAddressTruncation(@javax.annotation.Nullable Boolean allowAddressTruncation) {
+    this.allowAddressTruncation = allowAddressTruncation;
+    return this;
+  }
+
+  /**
+   * Согласие на усечение адреса до номера дома, если полный адрес не проходит в Почте России (ЕПС валидирует адреса по ГАР, где помещение/офис/комната часто не зарегистрированы). Усечённая форма готовится автоматически (только когда дом распознан ФИАС). Триггеры: провал валидации адреса Почтой — проверка не блокирует письмо, пока есть варианты (административная форма → муниципальная → усечённая до дома), — и ошибка сохранения отправления SHIPMENT_ERROR — варианты перебираются сразу, без повторных попыток отправки. (Ошибка регистрации EPS_61_INVALID_ADDRESS обрабатывается независимо существующим механизмом муниципального fallback-адреса, без усечения.) Письмо, ушедшее на усечённый адрес, помечается &#x60;address_truncation_applied: true&#x60; у получателя. Если не помог ни один вариант — стандартная ошибка (422 при создании либо &#x60;failed&#x60; + возврат средств).
+   * @return allowAddressTruncation
+   */
+  @javax.annotation.Nullable
+  public Boolean getAllowAddressTruncation() {
+    return allowAddressTruncation;
+  }
+
+  public void setAllowAddressTruncation(@javax.annotation.Nullable Boolean allowAddressTruncation) {
+    this.allowAddressTruncation = allowAddressTruncation;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -213,12 +237,13 @@ public class RecipientInput {
         Objects.equals(this.partyType, recipientInput.partyType) &&
         Objects.equals(this.inn, recipientInput.inn) &&
         Objects.equals(this.email, recipientInput.email) &&
-        Objects.equals(this.resolveAddressByInn, recipientInput.resolveAddressByInn);
+        Objects.equals(this.resolveAddressByInn, recipientInput.resolveAddressByInn) &&
+        Objects.equals(this.allowAddressTruncation, recipientInput.allowAddressTruncation);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, address, partyType, inn, email, resolveAddressByInn);
+    return Objects.hash(name, address, partyType, inn, email, resolveAddressByInn, allowAddressTruncation);
   }
 
   @Override
@@ -231,6 +256,7 @@ public class RecipientInput {
     sb.append("    inn: ").append(toIndentedString(inn)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    resolveAddressByInn: ").append(toIndentedString(resolveAddressByInn)).append("\n");
+    sb.append("    allowAddressTruncation: ").append(toIndentedString(allowAddressTruncation)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -259,6 +285,7 @@ public class RecipientInput {
     openapiFields.add("inn");
     openapiFields.add("email");
     openapiFields.add("resolve_address_by_inn");
+    openapiFields.add("allow_address_truncation");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();

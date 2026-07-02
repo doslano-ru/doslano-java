@@ -86,4 +86,12 @@ public class RecipientInputTest {
         // TODO: test resolveAddressByInn
     }
 
+    /**
+     * Test the property 'allowAddressTruncation'
+     */
+    @Test
+    public void allowAddressTruncationTest() {
+        // TODO: test allowAddressTruncation
+    }
+
 }

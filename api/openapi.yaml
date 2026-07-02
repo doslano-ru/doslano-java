@@ -400,30 +400,35 @@ components:
           name: name
           inn: inn
           email: email
+          allow_address_truncation: false
         - resolve_address_by_inn: false
           address: address
           party_type: null
           name: name
           inn: inn
           email: email
+          allow_address_truncation: false
         - resolve_address_by_inn: false
           address: address
           party_type: null
           name: name
           inn: inn
           email: email
+          allow_address_truncation: false
         - resolve_address_by_inn: false
           address: address
           party_type: null
           name: name
           inn: inn
           email: email
+          allow_address_truncation: false
         - resolve_address_by_inn: false
           address: address
           party_type: null
           name: name
           inn: inn
           email: email
+          allow_address_truncation: false
         promo_code: promo_code
         on_promo_invalid: ignore
         dry_run: false
@@ -639,6 +644,7 @@ components:
         name: name
         inn: inn
         email: email
+        allow_address_truncation: false
       properties:
         name:
           description: ФИО или название получателя. При resolve_address_by_inn=true
@@ -672,6 +678,21 @@ components:
             з inn или не для organization — 422 recipient_resolve_requires_inn. Ес\
             ли передан и address — он fallback при неудаче резолва."
           type: boolean
+        allow_address_truncation:
+          default: false
+          description: "Согласие на усечение адреса до номера дома, если полный ад\
+            рес не проходит в Почте России (ЕПС валидирует адреса по ГАР, где поме\
+            щение/офис/комната часто не зарегистрированы). Усечённая форма готовит\
+            ся автоматически (только когда дом распознан ФИАС). Триггеры: провал в\
+            алидации адреса Почтой — проверка не блокирует письмо, пока есть вариа\
+            нты (административная форма → муниципальная → усечённая до дома), — и\
+            \ ошибка сохранения отправления SHIPMENT_ERROR — варианты перебираются\
+            \ сразу, без повторных попыток отправки. (Ошибка регистрации EPS_61_INVALID_ADDRESS\
+            \ обрабатывается независимо существующим механизмом муниципального fallback-а\
+            дреса, без усечения.) Письмо, ушедшее на усечённый адрес, помечается `address_truncation_applied:\
+            \ true` у получателя. Если не помог ни один вариант — стандартная ошиб\
+            ка (422 при создании либо `failed` + возврат средств)."
+          type: boolean
       required:
       - name
     PartyType:
@@ -704,6 +725,7 @@ components:
           tracking_number: tracking_number
           id: id
           error: error
+          address_truncation_applied: true
           shipment_number: shipment_number
           status: pending
         - receipt_pdf: https://openapi-generator.tech
@@ -715,6 +737,7 @@ components:
           tracking_number: tracking_number
           id: id
           error: error
+          address_truncation_applied: true
           shipment_number: shipment_number
           status: pending
         channel: web
@@ -778,6 +801,7 @@ components:
         tracking_number: tracking_number
         id: id
         error: error
+        address_truncation_applied: true
         shipment_number: shipment_number
         status: pending
       properties:
@@ -803,6 +827,11 @@ components:
         error:
           description: Причина ошибки (для `failed`).
           type: string
+        address_truncation_applied:
+          description: "Письмо отправляется/отправлено на адрес, усечённый до номе\
+            ра дома (сработало согласие `allow_address_truncation`). Поле `address`\
+            \ содержит фактический адрес отправки. Отсутствие поля эквивалентно false."
+          type: boolean
         receipt_pdf:
           description: "Ссылка на скачивание PDF фискального чека (54-ФЗ) этому по\
             лучателю через наш API (см. `GET /v1/letters/{id}/recipients/{recipient_id}/receipt.pdf`).\
@@ -1049,6 +1078,7 @@ components:
             tracking_number: tracking_number
             id: id
             error: error
+            address_truncation_applied: true
             shipment_number: shipment_number
             status: pending
           - receipt_pdf: https://openapi-generator.tech
@@ -1060,6 +1090,7 @@ components:
             tracking_number: tracking_number
             id: id
             error: error
+            address_truncation_applied: true
             shipment_number: shipment_number
             status: pending
           channel: web
@@ -1093,6 +1124,7 @@ components:
             tracking_number: tracking_number
             id: id
             error: error
+            address_truncation_applied: true
             shipment_number: shipment_number
             status: pending
           - receipt_pdf: https://openapi-generator.tech
@@ -1104,6 +1136,7 @@ components:
             tracking_number: tracking_number
             id: id
             error: error
+            address_truncation_applied: true
             shipment_number: shipment_number
             status: pending
           channel: web

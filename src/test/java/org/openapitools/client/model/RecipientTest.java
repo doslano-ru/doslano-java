@@ -104,6 +104,14 @@ public class RecipientTest {
     }
 
     /**
+     * Test the property 'addressTruncationApplied'
+     */
+    @Test
+    public void addressTruncationAppliedTest() {
+        // TODO: test addressTruncationApplied
+    }
+
+    /**
      * Test the property 'receiptPdf'
      */
     @Test

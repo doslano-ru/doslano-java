@@ -50,7 +50,7 @@ import ru.doslano.sdk.JSON;
 /**
  * Recipient
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-29T12:14:24.598854985Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-02T10:36:55.335575683Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class Recipient {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -91,6 +91,11 @@ public class Recipient {
   @SerializedName(SERIALIZED_NAME_ERROR)
   @javax.annotation.Nullable
   private String error;
+
+  public static final String SERIALIZED_NAME_ADDRESS_TRUNCATION_APPLIED = "address_truncation_applied";
+  @SerializedName(SERIALIZED_NAME_ADDRESS_TRUNCATION_APPLIED)
+  @javax.annotation.Nullable
+  private Boolean addressTruncationApplied;
 
   public static final String SERIALIZED_NAME_RECEIPT_PDF = "receipt_pdf";
   @SerializedName(SERIALIZED_NAME_RECEIPT_PDF)
@@ -262,6 +267,25 @@ public class Recipient {
   }
 
 
+  public Recipient addressTruncationApplied(@javax.annotation.Nullable Boolean addressTruncationApplied) {
+    this.addressTruncationApplied = addressTruncationApplied;
+    return this;
+  }
+
+  /**
+   * Письмо отправляется/отправлено на адрес, усечённый до номера дома (сработало согласие &#x60;allow_address_truncation&#x60;). Поле &#x60;address&#x60; содержит фактический адрес отправки. Отсутствие поля эквивалентно false.
+   * @return addressTruncationApplied
+   */
+  @javax.annotation.Nullable
+  public Boolean getAddressTruncationApplied() {
+    return addressTruncationApplied;
+  }
+
+  public void setAddressTruncationApplied(@javax.annotation.Nullable Boolean addressTruncationApplied) {
+    this.addressTruncationApplied = addressTruncationApplied;
+  }
+
+
   public Recipient receiptPdf(@javax.annotation.Nullable URI receiptPdf) {
     this.receiptPdf = receiptPdf;
     return this;
@@ -337,6 +361,7 @@ public class Recipient {
         Objects.equals(this.trackingNumber, recipient.trackingNumber) &&
         Objects.equals(this.priceMinor, recipient.priceMinor) &&
         Objects.equals(this.error, recipient.error) &&
+        Objects.equals(this.addressTruncationApplied, recipient.addressTruncationApplied) &&
         Objects.equals(this.receiptPdf, recipient.receiptPdf) &&
         Objects.equals(this.receiptUrl, recipient.receiptUrl) &&
         Objects.equals(this.inventoryPdf, recipient.inventoryPdf);
@@ -344,7 +369,7 @@ public class Recipient {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, address, status, shipmentNumber, trackingNumber, priceMinor, error, receiptPdf, receiptUrl, inventoryPdf);
+    return Objects.hash(id, name, address, status, shipmentNumber, trackingNumber, priceMinor, error, addressTruncationApplied, receiptPdf, receiptUrl, inventoryPdf);
   }
 
   @Override
@@ -359,6 +384,7 @@ public class Recipient {
     sb.append("    trackingNumber: ").append(toIndentedString(trackingNumber)).append("\n");
     sb.append("    priceMinor: ").append(toIndentedString(priceMinor)).append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
+    sb.append("    addressTruncationApplied: ").append(toIndentedString(addressTruncationApplied)).append("\n");
     sb.append("    receiptPdf: ").append(toIndentedString(receiptPdf)).append("\n");
     sb.append("    receiptUrl: ").append(toIndentedString(receiptUrl)).append("\n");
     sb.append("    inventoryPdf: ").append(toIndentedString(inventoryPdf)).append("\n");
@@ -392,6 +418,7 @@ public class Recipient {
     openapiFields.add("tracking_number");
     openapiFields.add("price_minor");
     openapiFields.add("error");
+    openapiFields.add("address_truncation_applied");
     openapiFields.add("receipt_pdf");
     openapiFields.add("receipt_url");
     openapiFields.add("inventory_pdf");
