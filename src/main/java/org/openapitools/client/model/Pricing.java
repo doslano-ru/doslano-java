@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * Pricing
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-02T10:36:55.335575683Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-22T13:37:56.424318976Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class Pricing {
   public static final String SERIALIZED_NAME_TOTAL_MINOR = "total_minor";
   @SerializedName(SERIALIZED_NAME_TOTAL_MINOR)

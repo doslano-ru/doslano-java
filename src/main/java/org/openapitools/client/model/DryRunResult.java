@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * Результат пробного прогона (&#x60;dry_run: true&#x60;): запрос полностью валиден. Письмо НЕ создано, средства НЕ списаны. 
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-02T10:36:55.335575683Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-22T13:37:56.424318976Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class DryRunResult {
   public static final String SERIALIZED_NAME_DRY_RUN = "dry_run";
   @SerializedName(SERIALIZED_NAME_DRY_RUN)

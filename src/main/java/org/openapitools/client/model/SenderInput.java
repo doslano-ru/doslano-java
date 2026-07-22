@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * Отправитель. Любое поле можно опустить — оно берётся из профиля аккаунта (ЛК). Например, передайте только &#x60;email&#x60;, чтобы переопределить почту плательщика для кассового чека, а имя/адрес оставить из профиля. Если &#x60;sender&#x60; не передан целиком — весь отправитель берётся из профиля.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-02T10:36:55.335575683Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-22T13:37:56.424318976Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class SenderInput {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)
