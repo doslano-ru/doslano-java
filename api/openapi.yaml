@@ -26,7 +26,9 @@ info:
     листе описи.
 
     **Лимиты по файлам.** Формат — только PDF; до 25 МиБ на файл; к основному
-    документу можно приложить до 10 вложений.
+    документу можно приложить до 49 вложений. Тело запроса — не более 64 МиБ
+    целиком, поэтому крупные и многочисленные файлы передавайте ссылкой
+    (`url`), а не в `base64`.
 
     Пересылку, доставку и вручение отправлений осуществляет АО «Почта России»
     по договору № 3320001147-ОФ от 14 мая 2026 года; doslano оператором
@@ -590,9 +592,11 @@ components:
         main_file:
           $ref: '#/components/schemas/FileSource'
         attachments:
+          description: |
+            Приложения к основному документу, до 49 (как в личном кабинете).
           items:
             $ref: '#/components/schemas/FileSource'
-          maxItems: 10
+          maxItems: 49
           type: array
       required:
       - main_file
@@ -650,8 +654,9 @@ components:
         party_type:
           $ref: '#/components/schemas/PartyType'
         inn:
-          description: ИНН (для юр. лиц/ИП). Не указан — из профиля ЛК.
-          pattern: "^[0-9]{10,12}$"
+          description: "ИНН (необязателен): 10 цифр — юрлицо, 12 — ИП/самозанятый\
+            . Не указан — из профиля ЛК."
+          pattern: "^(?:[0-9]{10}|[0-9]{12})$"
           type: string
     RecipientInput:
       additionalProperties: false
@@ -676,8 +681,9 @@ components:
         party_type:
           $ref: '#/components/schemas/PartyType'
         inn:
-          description: ИНН (10 цифр).
-          pattern: "^[0-9]{10}$"
+          description: "ИНН (необязателен, в т.ч. для юрлица): 10 цифр — юрлицо, 12\
+            \ — ИП/самозанятый. Обязателен только при resolve_address_by_inn=true."
+          pattern: "^(?:[0-9]{10}|[0-9]{12})$"
           type: string
         email:
           description: Email получателя для уведомления-копии (опционально). После
