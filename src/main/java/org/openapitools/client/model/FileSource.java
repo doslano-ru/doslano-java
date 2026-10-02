@@ -49,7 +49,7 @@ import ru.doslano.sdk.JSON;
 /**
  * Источник PDF-файла. Укажите **ровно один** способ: - &#x60;base64&#x60; — содержимое файла в base64 (для небольших файлов); - &#x60;url&#x60; — HTTPS-ссылка, файл скачивается потоково (для крупных файлов,   чтобы не передавать тело в base64). Тип файла — только PDF, до 25 МиБ на файл. На бумаге печатаются до 4 листов основного документа и лист описи вложения (см. описание API выше). 
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-10-01T17:23:12.818658771Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-10-02T14:44:52.465866313Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class FileSource {
   public static final String SERIALIZED_NAME_BASE64 = "base64";
   @SerializedName(SERIALIZED_NAME_BASE64)

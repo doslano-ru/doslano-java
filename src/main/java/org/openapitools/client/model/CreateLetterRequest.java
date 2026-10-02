@@ -55,7 +55,7 @@ import ru.doslano.sdk.JSON;
 /**
  * CreateLetterRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-10-01T17:23:12.818658771Z[Etc/UTC]", comments = "Generator version: 7.10.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-10-02T14:44:52.465866313Z[Etc/UTC]", comments = "Generator version: 7.10.0")
 public class CreateLetterRequest {
   public static final String SERIALIZED_NAME_SENDER = "sender";
   @SerializedName(SERIALIZED_NAME_SENDER)
